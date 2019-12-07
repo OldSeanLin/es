@@ -1,0 +1,3541 @@
+<!DOCTYPE html>
+<!-- saved from url=(0035)http://www.data-master.net/83411704 -->
+<html lang="zh"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link href="http://www.data-master.net/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="http://www.data-master.net/favicon.png" rel="icon">
+    <meta name="author" content="Nghia Minh Luong">
+    <meta name="keywords" content="数据极，data-master.net，数据分析，数据挖掘，大数据开发，微服务架构，数据架构，数据科学，python，k8s，kubernetes，博客">
+    <!--<meta name="description" content="数据极是一个数据科学相关博客，提供数据科学及研发相关的经验，提供一个交流学习的场所，帮助希望入门数据分析、数据挖掘、python开发、数据架构的用户一个良好的入门计划">-->
+    <meta name="description" content=".source(" persons")="" index(索引名)。bulkrequestrequest){...}="" 调用bulk之前执行，例如你可以通过request.numberofactions()方法知道numberofactions。bulkrequestrequest,。throwablefailure){...}="" 调用失败抛throwable。"="">
+    <title>ES基本查询总结</title>
+    <!-- Fonts-->
+    <!--<link href="https://fonts.googleapis.com/css?family=Archivo+Narrow:300,400,700%7CMontserrat:300,400,500,600,700,800,900" rel="stylesheet">-->
+    <!--<link rel="stylesheet" href="plugins/font-awesome/css/font-awesome.min.css">-->
+    <link rel="stylesheet" href="./ES基本查询总结_files/style.css">  <!-- 这是图标的，不能删-->
+    <!-- CSS Library-->
+    <link rel="stylesheet" href="./ES基本查询总结_files/bootstrap.min.css">   <!-- 这是bootstrap的，不能删-->
+    <link rel="stylesheet" href="./ES基本查询总结_files/owl.carousel.css">   <!-- 这是轮播的，不能删-->
+    <!--<link rel="stylesheet" href="plugins/jquery-bar-rating/dist/themes/fontawesome-stars.css">-->
+    <!--<link rel="stylesheet" href="plugins/slick/slick/slick.css">-->
+    <!--<link rel="stylesheet" href="plugins/bootstrap-select/dist/css/bootstrap-select.min.css">-->
+    <!--<link rel="stylesheet" href="plugins/Magnific-Popup/dist/magnific-popup.css">-->
+    <!--<link rel="stylesheet" href="plugins/jquery-ui/jquery-ui.min.css">-->
+    <!--<link rel="stylesheet" href="plugins/revolution/css/settings.css">-->
+    <!--<link rel="stylesheet" href="plugins/revolution/css/layers.css">-->
+    <!--<link rel="stylesheet" href="plugins/revolution/css/navigation.css">-->
+    <!-- Custom-->
+    <link rel="stylesheet" href="./ES基本查询总结_files/style(1).css">   <!-- 这是整体css的，不能删-->
+    <!--HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries-->
+    <!--WARNING: Respond.js doesn't work if you view the page via file://-->
+    <!--[if lt IE 9]><!--<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>-->
+    <!--<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script><![endif]&ndash;&gt;-->
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./ES基本查询总结_files/simples.css">
+
+
+    <script type="text/x-mathjax-config;executed=true">
+    MathJax.Hub.Config({
+            "HTML-CSS": {
+                    linebreaks: { automatic: true, width: "94%container" },
+                    imageFont: null
+            },
+
+            tex2jax: {
+                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+                preview: "none"
+            },
+            mml2jax: {
+                preview: 'none'
+            }
+    });
+    </script>
+
+    <!--<link rel="stylesheet" href="github-markdown.css">-->
+    <style type="text/css">
+    /*.markdown-body {*/
+        /*box-sizing: border-box;*/
+        /*min-width: 200px;*/
+        /*max-width: 980px;*/
+        /*margin: 0 auto;*/
+        /*padding: 45px;*/
+        /*color: darkred;*/
+    /*}*/
+
+    @media (max-width: 767px) {
+        .ps-products {
+            width: 100% !important;
+        }
+    }
+    .markdown-body li{
+        type:"circle"
+    }
+
+    pre{
+        white-space: pre;
+        overflow-x:scroll;
+    }
+    pre code{
+        /*white-space: nowrap;*/
+        width: 1500px!important;
+        display: inline-block;
+    }
+
+    article a{
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+    table{width: 100%;font-size: 15px}
+    tr:nth-child(odd){background:#F4F4F4;}
+    table,table tr th, table tr td { border:1px solid darkslategrey;padding: 3px }
+    </style>
+
+
+
+
+<style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 2px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 2px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: 1em}
+.MathJax_MenuRadioCheck.RTL {right: 1em; left: auto}
+.MathJax_MenuLabel {padding: 2px 2em 4px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #CCCCCC; margin: 4px 1px 0px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: Highlight; color: HighlightText}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1em; bottom: 1.5em; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+<!--[if IE 7]><body class="ie7 lt-ie8 lt-ie9 lt-ie10"><![endif]-->
+<!--[if IE 8]><body class="ie8 lt-ie9 lt-ie10"><![endif]-->
+<!--[if IE 9]><body class="ie9 lt-ie10"><![endif]-->
+<body><div id="MathJax_Message" style="display: none;"></div>
+<!--<body class="ps-loading">-->
+<div class="header--sidebar"></div>
+<header class="header">
+<div class="header__top">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6 col-md-8 col-sm-6 col-xs-12 ">
+                <!--<p>460 West 34th Street, 15th floor, New York  -  Hotline: 804-377-3580 - 804-399-3580</p>-->
+            </div>
+            <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12 ">
+                <div class="header__actions"><a href="http://www.data-master.net/login.html">登录 / 注册</a>
+                    <!--<div class="btn-group ps-dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">USD<i class="fa fa-angle-down"></i></a>-->
+                    <!--<ul class="dropdown-menu">-->
+                    <!--<li><a href="#"><img src="images/flag/usa.svg" alt=""> USD</a></li>-->
+                    <!--<li><a href="#"><img src="images/flag/singapore.svg" alt=""> SGD</a></li>-->
+                    <!--<li><a href="#"><img src="images/flag/japan.svg" alt=""> JPN</a></li>-->
+                    <!--</ul>-->
+                    <!--</div>-->
+                    <!--<div class="btn-group ps-dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Language<i class="fa fa-angle-down"></i></a>-->
+                    <!--<ul class="dropdown-menu">-->
+                    <!--<li><a href="#">English</a></li>-->
+                    <!--<li><a href="#">Japanese</a></li>-->
+                    <!--<li><a href="#">Chinese</a></li>-->
+                    <!--</ul>-->
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="navigation">
+    <div class="container-fluid">
+        <div class="navigation__column left">
+            <div class="header__logo"><a class="ps-logo" href="http://www.data-master.net/homepage.html"><img src="./ES基本查询总结_files/DataMaster_logo_2.png" alt=""></a></div>
+        </div>
+        <div class="navigation__column center"><ul class="main-menu menu">
+			  <li class="menu-item menu-item-has-children dropdown"><a href="http://www.data-master.net/homepage.html">首页</a>
+					<!--<ul class="sub-menu">-->
+					  <!--<li class="menu-item"><a href="index.html">Homepage #1</a></li>-->
+					  <!--<li class="menu-item"><a href="#">Homepage #2</a></li>-->
+					  <!--<li class="menu-item"><a href="#">Homepage #3</a></li>-->
+					<!--</ul>-->
+			  </li>
+                <li class="menu-item menu-item-has-children has-mega-menu"><a href="http://www.data-master.net/1">博文目录</a>
+                    <!--<div class="mega-menu">-->
+                    <!--<div class="mega-wrap">-->
+                    <!--<div class="mega-column">-->
+                    <!--&lt;!&ndash;<ul class="mega-item mega-features">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">NEW RELEASES</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">FEATURES SHOES</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">BEST SELLERS</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">NOW TRENDING</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">SUMMER ESSENTIALS</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">MOTHER'S DAY COLLECTION</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">FAN GEAR</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+                    <!--</div>-->
+                    <!--<div class="mega-column">-->
+                    <!--<h4 class="mega-heading">教程</h4>-->
+                    <!--<ul class="mega-item">-->
+                    <!--<li><a href="http://www.runoob.com/" target="_blank">菜鸟教程</a></li>-->
+                    <!--<li><a href="https://blog.csdn.net/luanpeng825485697/article/details/78347433" target="_blank">进阶教程</a></li>-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">Training & Gym</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">Basketball</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">Football</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">Soccer</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">Baseball</a></li>&ndash;&gt;-->
+                    <!--</ul>-->
+                    <!--</div>-->
+                    <!--<div class="mega-column">-->
+                    <!--<h4 class="mega-heading">测试</h4>-->
+                    <!--<ul class="mega-item">-->
+                    <!--<li><a href="product-listing.html" onclick="get_question_product_listing()">SQL</a></li>-->
+                    <!--<li><a href="product-listing.html" onclick="get_question_product_listing()">Python</a></li>-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">Pandas</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">Numpy</a></li>&ndash;&gt;-->
+                    <!--<li><a href="product-listing.html" onclick="get_question_product_listing()">数据可视化</a></li>-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">Sklearn</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">Shorts</a></li>&ndash;&gt;-->
+                    <!--</ul>-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash;<div class="mega-column">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<h4 class="mega-heading">Accessories</h4>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<ul class="mega-item">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">Compression & Nike Pro</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">Tops & T-Shirts</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">Polos</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">Hoodies & Sweatshirts</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">Jackets & Vests</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">Pants & Tights</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">Shorts</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="mega-column">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<h4 class="mega-heading">BRAND</h4>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<ul class="mega-item">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">NIKE</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">Adidas</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">Dior</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<li><a href="product-listing.html">B&G</a></li>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--</div>-->
+                    <!--</div>-->
+                </li>
+                <li class="menu-item menu-item-has-children has-mega-menu"><a href="http://www.data-master.net/83411704#">数据技能测试</a>
+                    <div class="mega-menu">
+                        <div class="mega-wrap">
+                            <div class="mega-column">
+                                <!--<ul class="mega-item mega-features">-->
+                                <!--<li><a href="product-listing.html">NEW RELEASES</a></li>-->
+                                <!--<li><a href="product-listing.html">FEATURES SHOES</a></li>-->
+                                <!--<li><a href="product-listing.html">BEST SELLERS</a></li>-->
+                                <!--<li><a href="product-listing.html">NOW TRENDING</a></li>-->
+                                <!--<li><a href="product-listing.html">SUMMER ESSENTIALS</a></li>-->
+                                <!--<li><a href="product-listing.html">MOTHER'S DAY COLLECTION</a></li>-->
+                                <!--<li><a href="product-listing.html">FAN GEAR</a></li>-->
+                                <!--</ul>-->
+                            </div>
+                            <div class="mega-column">
+                                <h4 class="mega-heading">教程</h4>
+                                <ul class="mega-item">
+                                    <li><a href="http://www.runoob.com/" target="_blank">菜鸟教程</a></li>
+                                    <li><a href="https://blog.csdn.net/luanpeng825485697/article/details/78347433" target="_blank">进阶教程</a></li>
+                                    <!--<li><a href="product-listing.html">Training & Gym</a></li>-->
+                                    <!--<li><a href="product-listing.html">Basketball</a></li>-->
+                                    <!--<li><a href="product-listing.html">Football</a></li>-->
+                                    <!--<li><a href="product-listing.html">Soccer</a></li>-->
+                                    <!--<li><a href="product-listing.html">Baseball</a></li>-->
+                                </ul>
+                            </div>
+                            <div class="mega-column">
+                                <h4 class="mega-heading">测试</h4>
+                                <ul class="mega-item">
+                                    <li><a href="http://www.data-master.net/product-listing.html" onclick="get_question_product_listing()">SQL</a></li>
+                                    <li><a href="http://www.data-master.net/product-listing.html" onclick="get_question_product_listing()">Python</a></li>
+                                    <li><a href="http://www.data-master.net/product-listing.html" onclick="get_question_product_listing()">Pandas</a></li>
+                                    <li><a href="http://www.data-master.net/product-listing.html" onclick="get_question_product_listing()">Numpy</a></li>
+                                    <li><a href="http://www.data-master.net/product-listing.html" onclick="get_question_product_listing()">数据可视化</a></li>
+                                    <li><a href="http://www.data-master.net/product-listing.html" onclick="get_question_product_listing()">Sklearn</a></li>
+                                    <li><a href="http://www.data-master.net/product-listing.html" onclick="get_question_product_listing()">Keras</a></li>
+                                    <li><a href="http://www.data-master.net/product-listing.html" onclick="get_question_product_listing()">TensorFlow</a></li>
+                                    <li><a href="http://www.data-master.net/product-listing.html" onclick="get_question_product_listing()">机器学习</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="menu-item menu-item-has-children dropdown"><a href="http://www.data-master.net/ToolsListing.html" target="_blank">实用工具</a>
+                    <!--<ul class="sub-menu">
+                        <li class="menu-item menu-item-has-children dropdown"><a href="#">数据分析</a>
+                        <li class="menu-item menu-item-has-children dropdown"><a href="#">数据挖掘</a>-->
+                            <!--<ul class="sub-menu">-->
+                            <!--<li class="menu-item"><a href="#">数据分析面试经验</a></li>-->
+                            <!--<li class="menu-item"><a href="#">数据挖掘面试经验</a></li>-->
+                            <!--</ul>-->
+                        <!--</li>-->
+                        <!--<li class="menu-item"><a href="#">Blog List</a></li>-->
+                    <!--</ul>-->
+                </li>
+                <li class="menu-item menu-item-has-children dropdown"><a href="http://www.data-master.net/13" target="_blank">面试经验</a>
+                    <!--<ul class="sub-menu">
+                        <li class="menu-item menu-item-has-children dropdown"><a href="#">数据分析</a>
+                        <li class="menu-item menu-item-has-children dropdown"><a href="#">数据挖掘</a>-->
+                            <!--<ul class="sub-menu">-->
+                            <!--<li class="menu-item"><a href="#">数据分析面试经验</a></li>-->
+                            <!--<li class="menu-item"><a href="#">数据挖掘面试经验</a></li>-->
+                            <!--</ul>-->
+                        <!--</li>-->
+                        <!--<li class="menu-item"><a href="#">Blog List</a></li>-->
+                    <!--</ul>-->
+                </li>
+                <li class="menu-item menu-item-has-children dropdown"><a href="http://www.data-master.net/feedback.html" target="_blank">意见反馈</a>
+                    <!--<ul class="sub-menu">-->
+                    <!--<li class="menu-item"><a href="#">Contact Us #1</a></li>-->
+                    <!--<li class="menu-item"><a href="#">Contact Us #2</a></li>-->
+                    <!--</ul>-->
+                </li>
+                <!--<li class="menu-item menu-item-has-children dropdown"><a href="#">商务合作</a>-->
+                <!--&lt;!&ndash;<ul class="sub-menu">&ndash;&gt;-->
+                <!--&lt;!&ndash;<li class="menu-item"><a href="#">Contact Us #1</a></li>&ndash;&gt;-->
+                <!--&lt;!&ndash;<li class="menu-item"><a href="#">Contact Us #2</a></li>&ndash;&gt;-->
+                <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+                <!--</li>-->
+            </ul>
+			
+      </div>
+        <div class="navigation__column right">
+            <form class="ps-search--header" action="http://www.data-master.net/do_action" method="post">
+                <input class="form-control" type="text" placeholder="站内搜索">
+                <button><i class="ps-icon-search"></i></button>
+            </form>
+            <!--<div class="ps-cart"><a class="ps-cart__toggle" href="#"><span><i>20</i></span><i class="ps-icon-shopping-cart"></i></a>-->
+            <!--<div class="ps-cart__listing">-->
+            <!--<div class="ps-cart__content">-->
+            <!--<div class="ps-cart-item"><a class="ps-cart-item__close" href="#"></a>-->
+            <!--<div class="ps-cart-item__thumbnail"><a href="product-detail.html"></a><img src="images/cart-preview/1.jpg" alt=""></div>-->
+            <!--<div class="ps-cart-item__content"><a class="ps-cart-item__title" href="product-detail.html">Amazin�?Glazin�?/a>-->
+            <!--<p><span>Quantity:<i>12</i></span><span>Total:<i>£176</i></span></p>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="ps-cart-item"><a class="ps-cart-item__close" href="#"></a>-->
+            <!--<div class="ps-cart-item__thumbnail"><a href="product-detail.html"></a><img src="images/cart-preview/2.jpg" alt=""></div>-->
+            <!--<div class="ps-cart-item__content"><a class="ps-cart-item__title" href="product-detail.html">The Crusty Croissant</a>-->
+            <!--<p><span>Quantity:<i>12</i></span><span>Total:<i>£176</i></span></p>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="ps-cart-item"><a class="ps-cart-item__close" href="#"></a>-->
+            <!--<div class="ps-cart-item__thumbnail"><a href="product-detail.html"></a><img src="images/cart-preview/3.jpg" alt=""></div>-->
+            <!--<div class="ps-cart-item__content"><a class="ps-cart-item__title" href="product-detail.html">The Rolling Pin</a>-->
+            <!--<p><span>Quantity:<i>12</i></span><span>Total:<i>£176</i></span></p>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="ps-cart__total">-->
+            <!--<p>Number of items:<span>36</span></p>-->
+            <!--<p>Item Total:<span>£528.00</span></p>-->
+            <!--</div>-->
+            <!--<div class="ps-cart__footer"><a class="ps-btn" href="cart.html">Check out<i class="ps-icon-arrow-left"></i></a></div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <div class="menu-toggle"><span></span></div>
+        </div>
+    </div>
+</nav>
+</header>
+<div class="header-services">
+    <div class="ps-services owl-slider owl-carousel owl-theme owl-loading" data-owl-auto="true" data-owl-loop="true" data-owl-speed="7000" data-owl-gap="0" data-owl-nav="true" data-owl-dots="false" data-owl-item="1" data-owl-item-xs="1" data-owl-item-sm="1" data-owl-item-md="1" data-owl-item-lg="1" data-owl-duration="1000" data-owl-mousedrag="on">
+        <div class="owl-stage-outer"><div class="owl-stage owl-refresh" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s;"><div class="owl-item cloned"><p class="ps-service">
+            <!--<i class="ps-icon-delivery"></i>-->
+            <i class="ps-icon-envelope"></i>
+            <!--<strong>新消�?/strong>：新增一条SQL练习题记�?/p>-->
+            <!--<p class="ps-service"><i class="ps-icon-envelope"></i><strong>新消�?/strong>：数据客排行榜已更新</p>-->
+            <!--<p class="ps-service"><i class="ps-icon-envelope"></i><strong>新消�?/strong>：新增一篇Python教程</p>-->
+    </p></div><div class="owl-item"><p class="ps-service">
+            <!--<i class="ps-icon-delivery"></i>-->
+            <i class="ps-icon-envelope"></i>
+            <!--<strong>新消�?/strong>：新增一条SQL练习题记�?/p>-->
+            <!--<p class="ps-service"><i class="ps-icon-envelope"></i><strong>新消�?/strong>：数据客排行榜已更新</p>-->
+            <!--<p class="ps-service"><i class="ps-icon-envelope"></i><strong>新消�?/strong>：新增一篇Python教程</p>-->
+    </p></div><div class="owl-item cloned"><p class="ps-service">
+            <!--<i class="ps-icon-delivery"></i>-->
+            <i class="ps-icon-envelope"></i>
+            <!--<strong>新消�?/strong>：新增一条SQL练习题记�?/p>-->
+            <!--<p class="ps-service"><i class="ps-icon-envelope"></i><strong>新消�?/strong>：数据客排行榜已更新</p>-->
+            <!--<p class="ps-service"><i class="ps-icon-envelope"></i><strong>新消�?/strong>：新增一篇Python教程</p>-->
+    </p></div></div></div></div>
+</div>
+<main class="ps-main">
+<div class="ps-products-wrap pt-80 pb-80">
+<div class="ps-sidebar" data-mh="product-listing" style="left: 0px;right: 15px">
+<aside class="ps-widget--sidebar ps-widget--category">
+    <div class="ps-widget__header">
+        <h3>博客专栏</h3>
+    </div>
+    <!--<div class="ps-widget__content">-->
+        <!--<ul class="ps-list--checked">-->
+            <!--<li>-->
+                <!--<div class="radio">-->
+                    <!--<label>-->
+                        <!--<input type="radio" name="optionsRadios1" value="error"> 只看错题-->
+                    <!--</label>-->
+                <!--</div>-->
+                <!--<div class="radio">-->
+                    <!--<label>-->
+                        <!--<input type="radio" name="optionsRadios1" value="shoucang"> 只看收藏的问�?->
+                    <!--</label>-->
+                <!--</div>-->
+                <!--<div class="radio">-->
+                    <!--<label>-->
+                        <!--<input type="radio" name="optionsRadios1" value="new"> 只看新题-->
+                    <!--</label>-->
+                <!--</div>-->
+                <!--<div class="radio">-->
+                    <!--<label>-->
+                        <!--<input type="radio" name="optionsRadios1" value="all" checked> 看全部问�?->
+                    <!--</label>-->
+                <!--</div>-->
+                <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                <!--&lt;!&ndash;&lt;!&ndash;<li class="current"><a href="product-listing.html">Life(521)</a></li>&ndash;&gt;&ndash;&gt;-->
+                <!--&lt;!&ndash;<li><input type="radio" value="">  只看错题&ndash;&gt;-->
+                <!--&lt;!&ndash;<input type="radio" value="">  只看收藏的问�?/li>&ndash;&gt;-->
+                <!--&lt;!&ndash;<li><input type="radio" value="">  只看收藏的问�?/li>&ndash;&gt;-->
+                <!--&lt;!&ndash;<li><input type="radio" value="">  看全部问�?/li>&ndash;&gt;-->
+                <!--&lt;!&ndash;&lt;!&ndash;<li><a href="product-listing.html">Soccer(108)</a></li>&ndash;&gt;&ndash;&gt;-->
+                <!--&lt;!&ndash;&lt;!&ndash;<li><a href="product-listing.html">Trainning & game(47)</a></li>&ndash;&gt;&ndash;&gt;-->
+                <!--&lt;!&ndash;&lt;!&ndash;<li><a href="product-listing.html">More</a></li>&ndash;&gt;&ndash;&gt;-->
+            <!--</li>-->
+        <!--</ul>-->
+    <!--</div>-->
+</aside>
+<aside class="ps-widget--sidebar ps-widget--category">
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <!--<a data-toggle="collapse" data-parent="#accordion" href="http://www.data-master.net/1">-->
+                       <!--href="#collapseOne">-->
+                    <a href="http://www.data-master.net/1" target="_blank">
+                        Python大数据
+                    </a>
+                </h4>
+            </div>
+            <!--<div id="collapseOne" class="panel-collapse collapse">-->
+                <!--<div class="panel-body">-->
+                    <!--<ul>-->
+                        <!--<li><a>- Python基础</a></li>-->
+                        <!--<li><a>- Python应用</a></li>-->
+                        <!--<li><a>- Python后台Django</a></li>-->
+                        <!--<li><a>- Python自动化测�?/a></li>-->
+                        <!--<li><a>- Python网络爬虫</a></li>-->
+                        <!--<li><a>- Python爬虫案例</a></li>-->
+                        <!--<li><a>- Python数据存储及分�?/a></li>-->
+                        <!--<li><a>- Python可视�?/a></li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a href="http://www.data-master.net/2" target="_blank">
+                        微服务架构
+                    </a>
+                </h4>
+            </div>
+            <!--<div id="collapseTwo" class="panel-collapse collapse">-->
+                <!--<div class="panel-body">-->
+                    <!--<ul>-->
+                        <!--<li><a>- Python机器学习算法及案�?/a></li>-->
+                        <!--<li><a>- Python机器学习总结</a></li>-->
+                        <!--<li><a>- Python机器学习�?/a></li>-->
+                        <!--<li><a>- Python自然语言处理�?/a></li>-->
+                        <!--<li><a>- Python机器学习库sklearn</a></li>-->
+                        <!--<li><a>- Python深度学习教程及案�?/a></li>-->
+                        <!--<li><a>- Python深度学习�?/a></li>-->
+                        <!--<li><a>- Python分布式计�?/a></li>-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a href="http://www.data-master.net/3" target="_blank">
+                        Echarts数据可视化
+                    </a>
+                </h4>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a href="http://www.data-master.net/4" target="_blank">
+                        Matlab2C数据分析
+                    </a>
+                </h4>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a href="http://www.data-master.net/5" target="_blank">
+                        Java开发手册
+                    </a>
+                </h4>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a href="http://www.data-master.net/6" target="_blank">
+                        C++开发手册
+                    </a>
+                </h4>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a href="http://www.data-master.net/7" target="_blank">
+                        安卓开发手册
+                    </a>
+                </h4>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a href="http://www.data-master.net/8" target="_blank">
+                        Js开发手册
+                    </a>
+                </h4>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a href="http://www.data-master.net/9" target="_blank">
+                        jQuery开发手册
+                    </a>
+                </h4>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a href="http://www.data-master.net/10" target="_blank">
+                        jQuery Mobile开发手册
+                    </a>
+                </h4>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a href="http://www.data-master.net/11" target="_blank">
+                        CSS开发手册
+                    </a>
+                </h4>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a href="http://www.data-master.net/12" target="_blank">
+                        C#开发手册
+                    </a>
+                </h4>
+            </div>
+        </div>
+    </div>
+    <!--<div class="ps-widget__header">-->
+        <!--<h3>选择浏览模式</h3>-->
+    <!--</div>-->
+    <!--<div class="ps-widget__content">-->
+        <!--<ul class="ps-list--checked">-->
+            <!--<li>-->
+                <!--<div class="radio">-->
+                    <!--<label>-->
+                        <!--<input type="radio" name="optionsRadios2" value="view-mode" checked> 浏览问题-->
+                    <!--</label>-->
+                <!--</div>-->
+                <!--<div class="radio">-->
+                    <!--<label>-->
+                        <!--<input type="radio" name="optionsRadios2" value="answer-mode"> 答题模式-->
+                    <!--</label>-->
+                <!--</div>-->
+            <!--</li>-->
+            <!--&lt;!&ndash;&lt;!&ndash;<li class="current"><a href="product-listing.html">Life(521)</a></li>&ndash;&gt;&ndash;&gt;-->
+            <!--&lt;!&ndash;<li><a href="product-listing.html">浏览问题</a></li>&ndash;&gt;-->
+            <!--&lt;!&ndash;<li><a href="product-listing.html">答题模式</a></li>&ndash;&gt;-->
+            <!--&lt;!&ndash;&lt;!&ndash;<li><a href="product-listing.html">看全部题�?/a></li>&ndash;&gt;&ndash;&gt;-->
+            <!--&lt;!&ndash;&lt;!&ndash;<li><a href="product-listing.html">Soccer(108)</a></li>&ndash;&gt;&ndash;&gt;-->
+            <!--&lt;!&ndash;&lt;!&ndash;<li><a href="product-listing.html">Trainning & game(47)</a></li>&ndash;&gt;&ndash;&gt;-->
+            <!--&lt;!&ndash;&lt;!&ndash;<li><a href="product-listing.html">More</a></li>&ndash;&gt;&ndash;&gt;-->
+        <!--</ul>-->
+    <!--</div>-->
+</aside>
+<!--<aside class="ps-widget&#45;&#45;sidebar ps-widget&#45;&#45;category" style="float:right">-->
+    <!--<div class="ps-widget__header">-->
+        <!--<h3>选择每页题数</h3>-->
+    <!--</div>-->
+    <!--<div class="ps-widget__content">-->
+        <!--<ul class="ps-list&#45;&#45;checked">-->
+            <!--<li>-->
+                <!--<div class="radio">-->
+                    <!--<label>-->
+                        <!--<input type="radio" name="optionsRadios3" value="10" checked> 每页10�?->
+                    <!--</label>-->
+                <!--</div>-->
+                <!--<div class="radio">-->
+                    <!--<label>-->
+                        <!--<input type="radio" name="optionsRadios3" value="20"> 每页20�?->
+                    <!--</label>-->
+                <!--</div>-->
+                <!--<div class="radio">-->
+                    <!--<label>-->
+                        <!--<input type="radio" name="optionsRadios3" value="30"> 每页30�?->
+                    <!--</label>-->
+                <!--</div>-->
+            <!--</li>-->
+            <!--&lt;!&ndash;&lt;!&ndash;<li class="current"><a href="product-listing.html">Life(521)</a></li>&ndash;&gt;&ndash;&gt;-->
+            <!--&lt;!&ndash;<li><a href="product-listing.html">每页10�?/a></li>&ndash;&gt;-->
+            <!--&lt;!&ndash;<li><a href="product-listing.html">每页20�?/a></li>&ndash;&gt;-->
+            <!--&lt;!&ndash;<li><a href="product-listing.html">每页30�?/a></li>&ndash;&gt;-->
+            <!--&lt;!&ndash;&lt;!&ndash;<li><a href="product-listing.html">看全部题�?/a></li>&ndash;&gt;&ndash;&gt;-->
+            <!--&lt;!&ndash;&lt;!&ndash;<li><a href="product-listing.html">Soccer(108)</a></li>&ndash;&gt;&ndash;&gt;-->
+            <!--&lt;!&ndash;&lt;!&ndash;<li><a href="product-listing.html">Trainning & game(47)</a></li>&ndash;&gt;&ndash;&gt;-->
+            <!--&lt;!&ndash;&lt;!&ndash;<li><a href="product-listing.html">More</a></li>&ndash;&gt;&ndash;&gt;-->
+        <!--</ul>-->
+    <!--</div>-->
+<!--</aside>-->
+<!--<aside>-->
+    <!--<input type="button" class="btn btn-success btn-md" value="确定" style="background-color: #2AC37D;width: 100%" onclick="submit_mode_info()">-->
+<!--</aside>-->
+<!--<aside class="ps-widget--sidebar ps-widget--filter">-->
+<!--<div class="ps-widget__header">-->
+<!--<h3>Category</h3>-->
+<!--</div>-->
+<!--<div class="ps-widget__content">-->
+<!--<div class="ac-slider" data-default-min="300" data-default-max="2000" data-max="3450" data-step="50" data-unit="$"></div>-->
+<!--<p class="ac-slider__meta">Price:<span class="ac-slider__value ac-slider__min"></span>-<span class="ac-slider__value ac-slider__max"></span></p><a class="ac-slider__filter ps-btn" href="#">Filter</a>-->
+<!--</div>-->
+<!--</aside>-->
+<!--<aside class="ps-widget--sidebar ps-widget--category">-->
+<!--<div class="ps-widget__header">-->
+<!--<h3>Shoe Brand</h3>-->
+<!--</div>-->
+<!--<div class="ps-widget__content">-->
+<!--<ul class="ps-list--checked">-->
+<!--<li class="current"><a href="product-listing.html">Nike(521)</a></li>-->
+<!--<li><a href="product-listing.html">Adidas(76)</a></li>-->
+<!--<li><a href="product-listing.html">Baseball(69)</a></li>-->
+<!--<li><a href="product-listing.html">Gucci(36)</a></li>-->
+<!--<li><a href="product-listing.html">Dior(108)</a></li>-->
+<!--<li><a href="product-listing.html">B&G(108)</a></li>-->
+<!--<li><a href="product-listing.html">Louis Vuiton(47)</a></li>-->
+<!--</ul>-->
+<!--</div>-->
+<!--</aside>-->
+<!--<aside class="ps-widget--sidebar ps-widget--category">-->
+<!--<div class="ps-widget__header">-->
+<!--<h3>Width</h3>-->
+<!--</div>-->
+<!--<div class="ps-widget__content">-->
+<!--<ul class="ps-list--checked">-->
+<!--<li class="current"><a href="product-listing.html">Narrow</a></li>-->
+<!--<li><a href="product-listing.html">Regular</a></li>-->
+<!--<li><a href="product-listing.html">Wide</a></li>-->
+<!--<li><a href="product-listing.html">Extra Wide</a></li>-->
+<!--</ul>-->
+<!--</div>-->
+<!--</aside>-->
+<!--<div class="ps-sticky desktop">-->
+<!--<aside class="ps-widget--sidebar">-->
+<!--<div class="ps-widget__header">-->
+<!--<h3>Size</h3>-->
+<!--</div>-->
+<!--<div class="ps-widget__content">-->
+<!--<table class="table ps-table--size">-->
+<!--<tbody>-->
+<!--<tr>-->
+<!--<td class="active">3</td>-->
+<!--<td>5.5</td>-->
+<!--<td>8</td>-->
+<!--<td>10.5</td>-->
+<!--<td>13</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>3.5</td>-->
+<!--<td>6</td>-->
+<!--<td>8.5</td>-->
+<!--<td>11</td>-->
+<!--<td>13.5</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>4</td>-->
+<!--<td>6.5</td>-->
+<!--<td>9</td>-->
+<!--<td>11.5</td>-->
+<!--<td>14</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>4.5</td>-->
+<!--<td>7</td>-->
+<!--<td>9.5</td>-->
+<!--<td>12</td>-->
+<!--<td>14.5</td>-->
+<!--</tr>-->
+<!--<tr>-->
+<!--<td>5</td>-->
+<!--<td>7.5</td>-->
+<!--<td>10</td>-->
+<!--<td>12.5</td>-->
+<!--<td>15</td>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>-->
+<!--</div>-->
+<!--</aside>-->
+<!--<aside class="ps-widget--sidebar">-->
+<!--<div class="ps-widget__header">-->
+<!--<h3>Color</h3>-->
+<!--</div>-->
+<!--<div class="ps-widget__content">-->
+<!--<ul class="ps-list--color">-->
+<!--<li><a href="#"></a></li>-->
+<!--<li><a href="#"></a></li>-->
+<!--<li><a href="#"></a></li>-->
+<!--<li><a href="#"></a></li>-->
+<!--<li><a href="#"></a></li>-->
+<!--<li><a href="#"></a></li>-->
+<!--<li><a href="#"></a></li>-->
+<!--<li><a href="#"></a></li>-->
+<!--<li><a href="#"></a></li>-->
+<!--<li><a href="#"></a></li>-->
+<!--<li><a href="#"></a></li>-->
+<!--<li><a href="#"></a></li>-->
+<!--<li><a href="#"></a></li>-->
+<!--</ul>-->
+<!--</div>-->
+<!--</aside>-->
+<!--</div>-->
+<!--aside.ps-widget--sidebar-->
+<!--    .ps-widget__header: h3 Ads Banner-->
+<!--    .ps-widget__content-->
+<!--        a(href='product-listing'): img(src="images/offer/sidebar.jpg" alt="")-->
+<!---->
+<!--aside.ps-widget--sidebar-->
+<!--    .ps-widget__header: h3 Best Seller-->
+<!--    .ps-widget__content-->
+<!--        - for (var i = 0; i < 3; i ++)-->
+<!--            .ps-shoe--sidebar-->
+<!--                .ps-shoe__thumbnail-->
+<!--                    a(href='#')-->
+<!--                    img(src="images/shoe/sidebar/"+(i+1)+".jpg" alt="")-->
+<!--                .ps-shoe__content-->
+<!--                    if i == 1-->
+<!--                        a(href='#').ps-shoe__title Nike Flight Bonafide-->
+<!--                    else if i == 2-->
+<!--                        a(href='#').ps-shoe__title Nike Sock Dart QS-->
+<!--                    else-->
+<!--                        a(href='#').ps-shoe__title Men's Shoe-->
+<!--                    p <del> £253.00</del> £152.00-->
+<!--                    a(href='#').ps-btn PURCHASE-->
+</div>
+<div class="ps-products" data-mh="product-listing" style="width: 65%;left: 1%;margin-right: 60px">
+    <div class="ps-product-action">
+        <!--<div class="ps-product__filter">-->
+        <!--<select class="ps-select selectpicker">-->
+        <!--<option value="1">Shortby</option>-->
+        <!--<option value="2">Name</option>-->
+        <!--<option value="3">Price (Low to High)</option>-->
+        <!--<option value="3">Price (High to Low)</option>-->
+        <!--</select>-->
+        <!--</div>-->
+        <div class="ps-pagination" style="text-align: left">
+            <h1>ES基本查询总结</h1>
+            <br>
+            <span style="color: #2AC37D ;border-color: #2AC37D;border-width: 1px;border-style: solid;padding: 2px">转</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>2018年10月26日 12:34:39</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>文章标签：ES; elasticsearch; 查询; 语法</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://blog.csdn.net/luanpeng825485697/article/details/83411704" target="_blank" style="color: #4183C4 !important">博客源地址</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>阅读量：1622</span>
+        </div>
+    </div>
+    <div class="ps-product__columns">
+        <div class="row" style="margin: auto;color: red">
+            <article class="markdown-body">
+             <blockquote>
+<p><strong>全栈工程师开发手册 （作者：栾鹏）</strong><br>
+<strong><a href="https://blog.csdn.net/luanpeng825485697/article/details/83830968"> 架构系列文章</a></strong>  </p>
+</blockquote>
+<p>ES与数据库比较  </p>
+<p><img alt="这里写图片描述" src="./ES基本查询总结_files/0.jpg">  </p>
+<p>查询操作  </p>
+<p><img alt="这里写图片描述" src="./ES基本查询总结_files/1.jpg">  </p>
+<p>Elasticsearch中当我们设置Mapping（分词器、字段类型）完毕后，就可以按照设定的方式导入数据。  </p>
+<p>有了数据后，我们就需要对数据进行检索操作。根据实际开发需要，往往我们需要支持包含但不限于以下类型的检索：<br>
+1）精确匹配，类似mysql中的 “=”操作；<br>
+2）模糊匹配，类似mysql中的”like %关键词% “查询操作；<br>
+3）前缀匹配；<br>
+4）通配符匹配；<br>
+5）正则表达式匹配；<br>
+6）跨索引匹配；<br>
+7）提升精读匹配。  </p>
+<p>细数一下，我们的痛点在于：<br>
+1）ES究竟支持哪些检索操作？<br>
+2）如何实现ES精确值检索、指定索引检索、全文检索？  </p>
+<p>这些就是本文着重参考ES最新官方文档，针对ES5.X版本探讨的内容。  </p>
+<h1 id="0">0、检索概览</h1>
+<p>检索子句的行为取决于查询应用于过滤(filter)上下文还是查询/分析(query)上下文。  </p>
+<p>过滤上下文——对应于结构化检索  </p>
+<ul>
+<li type="disc">
+<p>1）核心回答的问题是：“这个文档是否符合这个查询条款？”  </p>
+</li>
+<li type="disc">
+<p>2）答案是简单的是或否，不计算分数。  </p>
+</li>
+<li type="disc">
+<p>3）过滤器上下文主要用于过滤结构化数据。类似于Mysql中判定某个字段是否存<br>
+在：  </p>
+</li>
+</ul>
+<p>例如：<br>
+a. 时间戳字段：是否属于2015年或2016年？<br>
+b. 状态字段：是否设置为“已发布”？  </p>
+<p>经常使用的过滤器将被Elasticsearch<strong>自动缓存</strong>，以<strong>加快性能</strong>。  </p>
+<p>分析上下文——对应于全文检索<br>
+1）核心回答了“本文档与此查询子句是否匹配？”的问题。  </p>
+<p>2）除了决定文档是否匹配之外，查询子句还会计算一个_score，表示文档与其他文档的匹配程度。  </p>
+<p>综合应用场景如下：  </p>
+<pre class="codehilite"><code>`GET /_search  
+{    
+    "query": {    
+        "bool": {    
+            "must": [    
+                {   
+                    "match": {   
+                        "title": "Search"   
+                        }  
+                },  
+                {   
+                    "match": {   
+                    "content": "Elasticsearch"   
+                    }  
+                }  
+            ],    
+            "filter": [  
+                {   
+                    "term": {   
+                        "status": "published"   
+                        }  
+                },  
+                {   
+                    "range": {   
+                        "publish_date": {   
+                        "gte": "2015-01-01"   
+                        }  
+                    }  
+                }  
+            ]  
+        }  
+     }  
+}  
+`  </code></pre>
+
+
+<p>以上检索，title中包含”Search”并且content中包含 “Elasticsearch”，status中精确匹配”published”，并且publish_date 大于“2015-01-01”的全部信息。  </p>
+<p>以下，以“<strong>脑图</strong>”的形式直观展示检索分类。<br>
+<img alt="这里写图片描述" src="./ES基本查询总结_files/2.jpg">  </p>
+<p>以下内容的原文需要参考ES官方文档（随着版本变化，后续会有更新）  </p>
+<h1 id="1">1、结构化检索</h1>
+<p>针对字段类型： 日期、时间、数字类型，以及精确的文本匹配。<br>
+结构化检索特点：  </p>
+<ul>
+<li type="disc">1）结构化查询，我们得到的结果 总是 非是即否，要么存于集合之中，要么存在集合之外。  </li>
+<li type="disc">2）结构化查询不关心文件的相关度或评分；它简单的对文档包括或排除处理。  </li>
+</ul>
+<h2 id="11">1.1 精确值查找</h2>
+<h3 id="111-term-query">1.1.1 单个精确值查找（term query）</h3>
+<p>term 查询会查找我们指定的精确值。term 查询是简单的，它接受一个字段名以及我们希望查找的数值。  </p>
+<p>想要类似mysql中如下sql语句的查询操作：  </p>
+<p>SELECT document FROM products WHERE price = 20;<br>
+DSL写法：  </p>
+<pre class="codehilite"><code>`GET /my_store/products/_search  
+{  
+    "query" : {  
+        "term" : {  
+            "price" : 20  
+        }  
+    }  
+}  
+`  </code></pre>
+
+
+<p>当进行精确值查找时， 我们会使用过滤器（filters）。过滤器很重要，因为它们执行速度非常快，不会计算相关度（直接跳过了整个评分阶段）而且很容易被缓存。如下： 使用 constant_score 查询以非评分模式来执行 term 查询并以一作为统一评分。  </p>
+<pre class="codehilite"><code>`GET /my_store/products/_search  
+{  
+    "query" : {  
+        "constant_score" : {  
+             "filter" : {  
+                "term" : {  
+                    "price" : 20  
+                }  
+            }  
+        }  
+    }  
+}  
+`  </code></pre>
+
+
+<p>注意：5.xES中，对于字符串类型，要进行精确值匹配。需要讲类型设置为text和keyword两种类型。mapping设置如下:  </p>
+<pre class="codehilite"><code>`POST testindex/testtype/_mapping  
+{  
+   "testtype ":{  
+     "properties":{  
+         "title":{  
+             "type":"text",  
+             "analyzer":"ik_max_word",  
+             "search_analyzer":"ik_max_word",  
+             "fields":{  
+                "keyword":{  
+                    "type":"keyword"  
+                }  
+             }  
+         }  
+    }  
+}  
+`  </code></pre>
+
+
+<p>精确值java api jest使用方法：<br>
+searchSourceBuilder.query(QueryBuilders.termQuery(“text.keyword”, “来自新华社的报道”));  </p>
+<h3 id="112">1.1.2 布尔过滤器</h3>
+<p>一个 bool 过滤器由三部分组成：  </p>
+<pre class="codehilite"><code>`{  
+   "bool" : {  
+      "must" :     [],  
+      "should" :   [],  
+      "must_not" : [],  
+      "filter":    []  
+   }  
+}  
+`  </code></pre>
+
+
+<p>must ——所有的语句都 必须（must） 匹配，与 AND 等价。<br>
+must_not ——所有的语句都 不能（must not） 匹配，与 NOT 等价。<br>
+should ——至少有一个语句要匹配，与 OR 等价。<br>
+filter——必须匹配，运行在非评分&amp;过滤模式。<br>
+就这么简单！ 当我们需要多个过滤器时，只须将它们置入 bool 过滤器的不同部分即可。  </p>
+<p>举例：  </p>
+<pre class="codehilite"><code>`GET /my_store/products/_search  
+{  
+    "query" : {  
+        "filtered" : {  
+            "filter" : {  
+                "bool" : {  
+                    "should" : [  
+                        { "term" : {"price" : 20}},  
+                        { "term" : {"productID" : "XHDK-A-1293-#fJ3"}}  
+                    ],  
+                    "must_not" : {  
+                        "term" : {"price" : 30}  
+                    }  
+                }  
+            }  
+        }  
+    }  
+}  
+`  </code></pre>
+
+
+<h3 id="113-terms-query">1.1.3 多个值精确查找（terms query）</h3>
+<pre class="codehilite"><code>`{  
+    "terms" : {  
+        "price" : [20, 30]  
+    }  
+}  
+`  </code></pre>
+
+
+<p>如上，terms是包含的意思，包含20或者包含30。<br>
+如下实现严格意义的精确值检索， tag_count代表必须匹配的次数为1。  </p>
+<pre class="codehilite"><code>`GET /my_index/my_type/_search  
+{  
+      "query": {  
+          "constant_score" : {  
+              "filter" : {  
+                  "bool" : {  
+                      "must" : [  
+                          { "term" : { "tags" : "search" } },  
+                          { "term" : { "tag_count" : 1 } }  
+                      ]  
+                  }  
+              }  
+          }  
+      }  
+}  
+`  </code></pre>
+
+
+<h2 id="12-range-query">1.2 范围检索（range query）</h2>
+<p>range 查询可同时提供包含（inclusive）和不包含（exclusive）这两种范围表达式，可供组合的选项如下：  </p>
+<pre class="codehilite"><code>`gt: &gt; 大于（greater than）  
+lt: &lt; 小于（less than）  
+gte: &gt;= 大于或等于（greater than or equal to）  
+lte: &lt;= 小于或等于（less than or equal to）  
+`  </code></pre>
+
+
+<p>类似Mysql中的范围查询：  </p>
+<pre class="codehilite"><code>`SELECT document  FROM   products  WHERE  price BETWEEN 20 AND 40`  
+`  </code></pre>
+
+
+<p>ES中对应的DSL如下：  </p>
+<pre class="codehilite"><code>`GET /my_store/products/_search  
+{  
+      "query" : {  
+          "constant_score" : {  
+              "filter" : {  
+                  "range" : {  
+                      "price" : {  
+                          "gte" : 20,  
+                          "lt" : 40  
+                      }  
+                  }  
+              }  
+          }  
+      }  
+}  
+`  </code></pre>
+
+
+<h2 id="13-exist-query">1.3 存在与否检索（exist query）</h2>
+<p>mysql中，有如下sql：<br>
+SELECT tags FROM posts WHERE tags IS NOT NULL;  </p>
+<p>ES中，exist查询某个字段是否存在：  </p>
+<pre class="codehilite"><code>`GET /my_index/posts/_search  
+{  
+    "query" : {  
+        "constant_score" : {  
+            "filter" : {  
+                "exists" : { "field" : "tags" }  
+            }  
+        }  
+    }  
+}  
+`  </code></pre>
+
+
+<p>若想要exist查询能匹配null类型，需要设置mapping：  </p>
+<pre class="codehilite"><code>`"user": {  
+      "type": "keyword",  
+      "null_value": "_null_"  
+  }  
+`  </code></pre>
+
+
+<p>missing查询在5.x版本已经不存在，改成如下的判定形式：  </p>
+<pre class="codehilite"><code>`GET /_search  
+{  
+    "query": {  
+        "bool": {  
+            "must_not": {  
+                "exists": {  
+                    "field": "user"  
+                }  
+            }  
+        }  
+    }  
+}  
+`  </code></pre>
+
+
+<h2 id="14-prefix-query">1.4 前缀检索（ Prefix Query ）</h2>
+<p>匹配包含 not analyzed 的前缀字符：  </p>
+<pre class="codehilite"><code>`GET /_search  
+{ "query": {  
+  "prefix" : { "user" : "ki" }  
+  }  
+}  
+`  </code></pre>
+
+
+<h2 id="15-wildcard-query">1.5 通配符检索( wildcard query)</h2>
+<p>匹配具有匹配通配符表达式（ (not analyzed ）的字段的文档。 支持的通配符：<br>
+1）<code>*</code>，它匹配任何字符序列（包括空字符序列）；<br>
+2）？，它匹配任何单个字符。<br>
+请注意，此查询可能很慢，因为它需要遍历多个术语。<br>
+为了防止非常慢的通配符查询，通配符不能以任何一个通配符*或？开头。<br>
+举例：  </p>
+<pre class="codehilite"><code>`GET /_search  
+{  
+    "query": {  
+        "wildcard" : { "user" : "ki*y" }  
+    }  
+}  
+`  </code></pre>
+
+
+<h2 id="16-regexp-query">1.6 正则表达式检索（regexp query）</h2>
+<p>正则表达式查询允许您使用正则表达式术语查询。<br>
+举例如下：  </p>
+<pre class="codehilite"><code>`GET /_search  
+{  
+  "query": {  
+  "regexp":{  
+  "name.first": "s.*y"  
+  }  
+  }  
+}  
+`  </code></pre>
+
+
+<p>注意： <code>*</code>的匹配会非常慢，你需要使用一个长的前缀，<br>
+通常类似<code>.*?</code>+通配符查询的正则检索性能会非常低。  </p>
+<h2 id="17-fuzzy-query">1.7 模糊检索(fuzzy query)</h2>
+<p>模糊查询查找在模糊度中指定的最大编辑距离内的所有可能的匹配项，然后检查术语字典，以找出在索引中实际存在待检索的关键词。<br>
+举例如下：  </p>
+<pre class="codehilite"><code>`GET /_search  
+{  
+      "query": {  
+          "fuzzy" : { "user" : "ki" }  
+      }  
+}  
+`  </code></pre>
+
+
+<h2 id="18-type-query">1.8 类型检索（type query）</h2>
+<p>举例：  </p>
+<pre class="codehilite"><code>`GET /my_index/_search  
+{  
+      "query": {  
+          "type" : {  
+              "value" : "xext"  
+          }  
+      }  
+}  
+`  </code></pre>
+
+
+<p>已验证，检索索引my_index中，type为xext的全部信息。  </p>
+<h2 id="19-idsids-query">1.9 Ids检索（ids query）</h2>
+<p>返回指定id的全部信息。  </p>
+<pre class="codehilite"><code>`GET /my_index/_search  
+{  
+      "query": {  
+          "ids" : {  
+              "type" : "xext",  
+              "values" : ["2", "4", "100"]  
+          }  
+      }  
+}  
+`  </code></pre>
+
+
+<h1 id="2">2、全文检索</h1>
+<p>高级全文查询通常用于在全文本字段（如电子邮件正文）上运行全文查询。他们了解如何对被查询的字段进行分析，并在执行前将每个字段的分析器（或search_analyzer）应用于查询字符串。  </p>
+<h2 id="21-match-query">2.1 匹配检索（match query）</h2>
+<p>匹配查询接受文本/数字/日期类型，分析它们，并构造查询。<br>
+1）匹配查询的类型为boolean。 这意味着分析所提供的文本，并且分析过程从提供的文本构造一个布尔查询，<br>
+可以将运算符标志设置为或以控制布尔子句（默认为或）；<br>
+2）文本分析取决于mapping中设定的analyzer（中文分词，我们默认选择ik分词器）；<br>
+3） fuzziness——模糊性允许基于被查询的字段的类型进行模糊匹配；<br>
+4）”operator”: “and”——匹配与操作（默认或操作）；<br>
+5） “minimum_should_match”: “75%”——这让我们可以指定必须匹配的词项数用来表示一个文档是否相关。<br>
+举例：  </p>
+<pre class="codehilite"><code>`GET /_search  
+{  
+    "query": {  
+        "match" : {  
+            "message" : {  
+                "query" : "this is a test",  
+                "operator" : "and"  
+            }  
+        }  
+    }  
+}  
+`  </code></pre>
+
+
+<h2 id="22-match_phrase-query">2.2 匹配解析检索 match_phrase query</h2>
+<p>match_phrase查询分析文本，并从分析文本中创建短语查询。<br>
+类似 match 查询， <strong>match_phrase 查询首先将查询字符串解析成一个词项列表，然后对这些词项进行搜索，但只保留那些包含 全部 搜索词项，且 位置 与搜索词项相同的文档</strong>。<br>
+举例如下：对于 quick fox 的短语搜索可能不会匹配到任何文档，因为没有文档包含的 quick 词之后紧跟着 fox 。  </p>
+<pre class="codehilite"><code>`GET /my_index/my_type/_search  
+{  
+      "query": {  
+          "match_phrase": {  
+              "title": "quick brown fox"  
+          }  
+      }  
+}  
+`  </code></pre>
+
+
+<h2 id="23-match_phrase_prefix">2.3 匹配解析前缀检索（match_phrase_prefix）</h2>
+<p>用户已经渐渐习惯在输完查询内容之前，就能为他们展现搜索结果，这就是所谓的 即时搜索（instant search） 或 输入即搜索（search-as-you-type） 。<br>
+不仅用户能在更短的时间内得到搜索结果，我们也能引导用户搜索索引中真实存在的结果。<br>
+例如，如果用户输入 johnnie walker bl ，我们希望在它们完成输入搜索条件前就能得到：<br>
+Johnnie Walker Black Label 和 Johnnie Walker Blue Label 。  </p>
+<p>match_phrase_prefix与match_phrase相同，除了它允许文本中最后一个术语的前缀匹配。<br>
+举例：  </p>
+<pre class="codehilite"><code>`GET / _search  
+{  
+    “query”：{  
+        “match_phrase_prefix”：{  
+            “message”：“quick brown f”  
+        }  
+    }  
+}  
+`  </code></pre>
+
+
+<h2 id="24-multi_match-query">2.4 多字段匹配检索（ multi_match query）</h2>
+<p>multi_match 查询为能在多个字段上反复执行相同查询提供了一种便捷方式。<br>
+默认情况下，查询的类型是 best_fields， 这表示它会为每个字段生成一个 match 查询。<br>
+举例1：”fields”: “<em>_title”<br>
+——任何与模糊模式正则匹配的字段都会被包括在搜索条件中， 例如可以左侧的方式同时匹配 book_title 、 chapter_title 和 section_title （书名、章名、节名）这三个字段。<br>
+举例2： “fields”: [ “</em>_title”, “chapter_title^2” ]<br>
+——可以使用 ^ 字符语法为单个字段提升权重，在字段名称的末尾添加 ^boost ， 其中 boost 是一个浮点数。<br>
+举例3：”fields”: [ “first_name”, “last_name” ],<br>
+“operator”: “and”<br>
+——两个字段必须都包含。  </p>
+<pre class="codehilite"><code>`GET /_search  
+{  
+      "query": {  
+          "multi_match" : {  
+              "query": "this is a test",  
+              "fields": [ "subject", "message" ]  
+          }  
+      }  
+}  
+`  </code></pre>
+
+
+<h2 id="25-query_string">2.5 字符串检索(query_string）</h2>
+<p>一个使用查询解析器解析其内容的查询。<br>
+query_string查询提供了以简明的简写语法执行多匹配查询 multi_match queries ，布尔查询 bool queries ，提升得分 boosting ，模糊匹配 fuzzy matching ，通配符 wildcards ，正则表达式 regexp 和范围查询 range queries 的方式。<br>
+支持参数达10几种。  </p>
+<pre class="codehilite"><code>`GET /_search  
+{  
+      "query": {  
+          "query_string" : {  
+              "default_field" : "content",  
+              "query" : "this AND that OR thus"  
+          }  
+      }  
+}  
+`  </code></pre>
+
+
+<h2 id="26-simple_query_string">2.6 简化字符串检索（simple_query_string）</h2>
+<p>一个使用SimpleQueryParser解析其上下文的查询。 与常规query_string查询不同，simple_query_string查询永远不会抛出异常，并丢弃查询的无效部分。<br>
+举例：  </p>
+<pre class="codehilite"><code>`GET /_search  
+{  
+    "query": {  
+        "simple_query_string" : {  
+            "fields" : ["content"],  
+            "query" : "foo bar -baz"  
+        }  
+    }  
+}  
+`  </code></pre>
+
+
+<p>支持的操作如下：<br>
+1）+表示AND操作<br>
+2）| 表示OR操作<br>
+3）- 否定操作<br>
+4）*在术语结束时表示前缀查询<br>
+5）（和）表示优先  </p>
+<h1 id="3">3 小结</h1>
+<p>有的博友可能会问，这和ES官网API有什么区别。<br>
+仔细对比你会发现，ES的中文文档是根据2.X版本翻译的，ES的英文文档一个版本是没有更新到5.X版本，另一个已经更新  </p>
+<p>===========================================================================  </p>
+<p>本节介绍以下 CRUD API：  </p>
+<p>单文档 APIs  </p>
+<ul>
+<li type="disc"><a href="https://link.jianshu.com/?t=document-apis/index-api.md">Index API</a>  </li>
+<li type="disc"><a href="https://link.jianshu.com/?t=document-apis/get-api.md">Get API</a>  </li>
+<li type="disc"><a href="https://link.jianshu.com/?t=document-apis/delete-api.md">Delete API</a>  </li>
+<li type="disc"><a href="https://link.jianshu.com/?t=document-apis/delete-by-query-api.md">Delete By Query API</a>  </li>
+<li type="disc"><a href="https://link.jianshu.com/?t=document-apis/update-api.md">Update API</a>  </li>
+</ul>
+<p>多文档 APIs  </p>
+<ul>
+<li type="disc"><a href="https://link.jianshu.com/?t=document-apis/multi-get-api.md">Multi Get API</a>  </li>
+<li type="disc"><a href="https://link.jianshu.com/?t=document-apis/bulk-api.md">Bulk API</a>  </li>
+<li type="disc"><a href="https://link.jianshu.com/?t=document-apis/using-bulk-processor.md">Using Bulk Processor</a>  </li>
+</ul>
+<p>Multi Get API<br>
+Bulk API  </p>
+<blockquote>
+<p>注意:所有的单文档的CRUD API，index参数只能接受单一的索引库名称，或者是一个指向单一索引库的alias。  </p>
+</blockquote>
+<h3 id="index-api">Index API</h3>
+<p>Index API 允许我们存储一个JSON格式的文档，使数据可以被搜索。文档通过index、type、id唯一确定。我们可以自己提供一个id，或者也使用Index API 为我们自动生成一个。  </p>
+<p>这里有几种不同的方式来产生JSON格式的文档(document)：  </p>
+<ul>
+<li type="disc">手动方式，使用原生的byte[]或者String  </li>
+<li type="disc">使用Map方式，会自动转换成与之等价的JSON  </li>
+<li type="disc">使用第三方库来序列化beans，如Jackson  </li>
+<li type="disc">使用内置的帮助类 XContentFactory.jsonBuilder()  </li>
+</ul>
+<p>手动方式  </p>
+<p><a href="http://www.data-master.net/83411704">数据格式</a>  </p>
+<pre class="codehilite"><code>`String json = "{" +  
+        "\"user\":\"kimchy\"," +  
+        "\"postDate\":\"2013-01-30\"," +  
+        "\"message\":\"trying out Elasticsearch\"" +  
+    "}";  
+
+`  </code></pre>
+
+
+<p>实例  </p>
+<pre class="codehilite"><code>`/**    
+ * 手动生成JSON    
+ */    
+@Test    
+public void CreateJSON(){    
+
+    String json = "{" +    
+            "\"user\":\"fendo\"," +    
+            "\"postDate\":\"2013-01-30\"," +    
+            "\"message\":\"Hell word\"" +    
+        "}";    
+
+    IndexResponse response = client.prepareIndex("fendo", "fendodate")    
+            .setSource(json)    
+            .get();    
+    System.out.println(response.getResult());    
+
+}    
+
+`  </code></pre>
+
+
+<p>Map方式  </p>
+<p>Map是key:value数据类型，可以代表json结构.  </p>
+<pre class="codehilite"><code>`Map&lt;String, Object&gt; json = new HashMap&lt;String, Object&gt;();  
+json.put("user","kimchy");  
+json.put("postDate",new Date());  
+json.put("message","trying out Elasticsearch");  
+
+`  </code></pre>
+
+
+<p>实例  </p>
+<pre class="codehilite"><code>` /**    
+ * 使用集合    
+ */    
+@Test    
+public void CreateList(){    
+
+    Map&lt;String, Object&gt; json = new HashMap&lt;String, Object&gt;();    
+    json.put("user","kimchy");    
+    json.put("postDate","2013-01-30");    
+    json.put("message","trying out Elasticsearch");    
+
+    IndexResponse response = client.prepareIndex("fendo", "fendodate")    
+            .setSource(json)    
+            .get();    
+    System.out.println(response.getResult());    
+
+}    
+
+`  </code></pre>
+
+
+<p>序列化方式  </p>
+<p>ElasticSearch已经使用了jackson，可以直接使用它把javabean转为json.  </p>
+<pre class="codehilite"><code>`import com.fasterxml.jackson.databind.*;  
+
+// instance a json mapper  
+ObjectMapper mapper = new ObjectMapper(); // create once, reuse  
+
+// generate json  
+byte[] json = mapper.writeValueAsBytes(yourbeaninstance);  
+
+`  </code></pre>
+
+
+<p>实例  </p>
+<pre class="codehilite"><code>`/**    
+ * 使用JACKSON序列化    
+ * @throws Exception    
+ */    
+@Test    
+public void CreateJACKSON() throws Exception{    
+
+    CsdnBlog csdn=new CsdnBlog();    
+    csdn.setAuthor("fendo");    
+    csdn.setContent("这是JAVA书籍");    
+    csdn.setTag("C");    
+    csdn.setView("100");    
+    csdn.setTitile("编程");    
+    csdn.setDate(new Date().toString());    
+
+    // instance a json mapper    
+    ObjectMapper mapper = new ObjectMapper(); // create once, reuse    
+
+    // generate json    
+    byte[] json = mapper.writeValueAsBytes(csdn);    
+
+    IndexResponse response = client.prepareIndex("fendo", "fendodate")    
+            .setSource(json)    
+            .get();    
+    System.out.println(response.getResult());    
+}    
+
+`  </code></pre>
+
+
+<p>XContentBuilder帮助类方式  </p>
+<p>ElasticSearch提供了一个内置的帮助类XContentBuilder来产生JSON文档  </p>
+<pre class="codehilite"><code>`// Index name  
+String _index = response.getIndex();  
+// Type name  
+String _type = response.getType();  
+// Document ID (generated or not)  
+String _id = response.getId();  
+// Version (if it's the first time you index this document, you will get: 1)  
+long _version = response.getVersion();  
+// status has stored current instance statement.  
+RestStatus status = response.status();  
+
+`  </code></pre>
+
+
+<p>实例  </p>
+<pre class="codehilite"><code>`/**    
+ * 使用ElasticSearch 帮助类    
+ * @throws IOException     
+ */    
+@Test    
+public void CreateXContentBuilder() throws IOException{    
+
+    XContentBuilder builder = XContentFactory.jsonBuilder()    
+            .startObject()    
+                .field("user", "ccse")    
+                .field("postDate", new Date())    
+                .field("message", "this is Elasticsearch")    
+            .endObject();    
+
+    IndexResponse response = client.prepareIndex("fendo", "fendodata").setSource(builder).get();    
+    System.out.println("创建成功!");    
+
+
+}    
+
+`  </code></pre>
+
+
+<p>综合实例  </p>
+<pre class="codehilite"><code>`  
+import java.io.IOException;    
+import java.net.InetAddress;    
+import java.net.UnknownHostException;    
+import java.util.Date;    
+import java.util.HashMap;    
+import java.util.Map;    
+
+import org.elasticsearch.action.index.IndexResponse;    
+import org.elasticsearch.client.transport.TransportClient;    
+import org.elasticsearch.common.settings.Settings;    
+import org.elasticsearch.common.transport.InetSocketTransportAddress;    
+import org.elasticsearch.common.xcontent.XContentBuilder;    
+import org.elasticsearch.common.xcontent.XContentFactory;    
+import org.elasticsearch.transport.client.PreBuiltTransportClient;    
+import org.junit.Before;    
+import org.junit.Test;    
+
+import com.fasterxml.jackson.core.JsonProcessingException;    
+import com.fasterxml.jackson.databind.ObjectMapper;    
+
+public class CreateIndex {    
+
+    private TransportClient client;    
+
+    @Before    
+    public void getClient() throws Exception{    
+        //设置集群名称    
+        Settings settings = Settings.builder().put("cluster.name", "my-application").build();// 集群名    
+        //创建client    
+        client  = new PreBuiltTransportClient(settings)    
+                .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("127.0.0.1"), 9300));    
+    }    
+
+    /**    
+     * 手动生成JSON    
+     */    
+    @Test    
+    public void CreateJSON(){    
+
+        String json = "{" +    
+                "\"user\":\"fendo\"," +    
+                "\"postDate\":\"2013-01-30\"," +    
+                "\"message\":\"Hell word\"" +    
+            "}";    
+
+        IndexResponse response = client.prepareIndex("fendo", "fendodate")    
+                .setSource(json)    
+                .get();    
+        System.out.println(response.getResult());    
+
+    }    
+
+
+    /**    
+     * 使用集合    
+     */    
+    @Test    
+    public void CreateList(){    
+
+        Map&lt;String, Object&gt; json = new HashMap&lt;String, Object&gt;();    
+        json.put("user","kimchy");    
+        json.put("postDate","2013-01-30");    
+        json.put("message","trying out Elasticsearch");    
+
+        IndexResponse response = client.prepareIndex("fendo", "fendodate")    
+                .setSource(json)    
+                .get();    
+        System.out.println(response.getResult());    
+
+    }    
+
+    /**    
+     * 使用JACKSON序列化    
+     * @throws Exception    
+     */    
+    @Test    
+    public void CreateJACKSON() throws Exception{    
+
+        CsdnBlog csdn=new CsdnBlog();    
+        csdn.setAuthor("fendo");    
+        csdn.setContent("这是JAVA书籍");    
+        csdn.setTag("C");    
+        csdn.setView("100");    
+        csdn.setTitile("编程");    
+        csdn.setDate(new Date().toString());    
+
+        // instance a json mapper    
+        ObjectMapper mapper = new ObjectMapper(); // create once, reuse    
+
+        // generate json    
+        byte[] json = mapper.writeValueAsBytes(csdn);    
+
+        IndexResponse response = client.prepareIndex("fendo", "fendodate")    
+                .setSource(json)    
+                .get();    
+        System.out.println(response.getResult());    
+    }    
+
+    /**    
+     * 使用ElasticSearch 帮助类    
+     * @throws IOException     
+     */    
+    @Test    
+    public void CreateXContentBuilder() throws IOException{    
+
+        XContentBuilder builder = XContentFactory.jsonBuilder()    
+                .startObject()    
+                    .field("user", "ccse")    
+                    .field("postDate", new Date())    
+                    .field("message", "this is Elasticsearch")    
+                .endObject();    
+
+        IndexResponse response = client.prepareIndex("fendo", "fendodata").setSource(builder).get();    
+        System.out.println("创建成功!");    
+
+
+    }    
+
+}    
+
+`  </code></pre>
+
+
+<blockquote>
+<p>你还可以通过startArray(string)和endArray()方法添加数组。.field()方法可以接受多种对象类型。你可以给它传递数字、日期、甚至其他XContentBuilder对象。  </p>
+</blockquote>
+<h3 id="get-api">Get API</h3>
+<p>根据id查看文档：  </p>
+<pre class="codehilite"><code>`GetResponse response = client.prepareGet("twitter", "tweet", "1").get();  
+`  </code></pre>
+
+
+<p>更多请查看 <a href="http://www.data-master.net/83411704">rest get API</a> 文档  </p>
+<p>配置线程  </p>
+<p><code>operationThreaded</code> 设置为 <code>true</code> 是在不同的线程里执行此次操作  </p>
+<p>下面的例子是<code>operationThreaded</code> 设置为 <code>false</code> ：  </p>
+<pre class="codehilite"><code>`GetResponse response = client.prepareGet("twitter", "tweet", "1")  
+        .setOperationThreaded(false)  
+        .get();  
+
+`  </code></pre>
+
+
+<h3 id="delete-api">Delete API</h3>
+<p>根据ID删除：  </p>
+<pre class="codehilite"><code>`DeleteResponse response = client.prepareDelete("twitter", "tweet", "1").get();  
+`  </code></pre>
+
+
+<p>更多请查看 <a href="http://www.data-master.net/83411704">delete API</a> 文档  </p>
+<p>配置线程  </p>
+<p><code>operationThreaded</code> 设置为 <code>true</code> 是在不同的线程里执行此次操作  </p>
+<p>下面的例子是<code>operationThreaded</code> 设置为 <code>false</code> ：  </p>
+<pre class="codehilite"><code>`GetResponse response = client.prepareGet("twitter", "tweet", "1")  
+        .setOperationThreaded(false)  
+        .get();  
+
+`  </code></pre>
+
+
+<pre class="codehilite"><code>`DeleteResponse response = client.prepareDelete("twitter", "tweet", "1")  
+        .setOperationThreaded(false)  
+        .get();  
+`  </code></pre>
+
+
+<h3 id="delete-by-query-api">Delete By Query API</h3>
+<p>通过查询条件删除  </p>
+<pre class="codehilite"><code>`BulkByScrollResponse response =  
+    DeleteByQueryAction.INSTANCE.newRequestBuilder(client)  
+        .filter(QueryBuilders.matchQuery("gender", "male")) //查询条件  
+        .source("persons") //index(索引名)  
+        .get();  //执行  
+
+long deleted = response.getDeleted(); //删除文档的数量  
+`  </code></pre>
+
+
+<p>如果需要执行的时间比较长，可以使用异步的方式处理,结果在回调里面获取  </p>
+<pre class="codehilite"><code>`DeleteByQueryAction.INSTANCE.newRequestBuilder(client)  
+    .filter(QueryBuilders.matchQuery("gender", "male"))      //查询              
+    .source("persons")                //index(索引名)                                      
+    .execute(new ActionListener&lt;BulkByScrollResponse&gt;() {     //回调监听       
+        @Override  
+        public void onResponse(BulkByScrollResponse response) {  
+            long deleted = response.getDeleted();   //删除文档的数量                   
+        }  
+        @Override  
+        public void onFailure(Exception e) {  
+            // Handle the exception  
+        }  
+    });  
+`  </code></pre>
+
+
+<h3 id="update-api">Update API</h3>
+<p>有两种方式更新索引：  </p>
+<ul>
+<li type="disc">创建 <code>UpdateRequest</code>,通过client发送；  </li>
+<li type="disc">使用 <code>prepareUpdate()</code> 方法；  </li>
+</ul>
+<p>使用UpdateRequest  </p>
+<pre class="codehilite"><code>`UpdateRequest updateRequest = new UpdateRequest();  
+updateRequest.index("index");  
+updateRequest.type("type");  
+updateRequest.id("1");  
+updateRequest.doc(jsonBuilder()  
+        .startObject()  
+            .field("gender", "male")  
+        .endObject());  
+client.update(updateRequest).get();  
+
+`  </code></pre>
+
+
+<p>使用 <code>prepareUpdate()</code> 方法  </p>
+<blockquote>
+<p>这里官方的示例有问题，new Script（）参数错误，所以一下代码是我自己写的（2017/11/10）  </p>
+</blockquote>
+<pre class="codehilite"><code>`client.prepareUpdate("ttl", "doc", "1")  
+        .setScript(new Script("ctx._source.gender = \"male\""  ,ScriptService.ScriptType.INLINE, null, null))//脚本可以是本地文件存储的，如果使用文件存储的脚本，需要设置 ScriptService.ScriptType.FILE   
+        .get();  
+
+client.prepareUpdate("ttl", "doc", "1")  
+        .setDoc(jsonBuilder()   //合并到现有文档  
+            .startObject()  
+                .field("gender", "male")  
+            .endObject())  
+        .get();  
+`  </code></pre>
+
+
+<p>Update by script  </p>
+<p>使用脚本更新文档  </p>
+<pre class="codehilite"><code>`UpdateRequest updateRequest = new UpdateRequest("ttl", "doc", "1")  
+        .script(new Script("ctx._source.gender = \"male\""));  
+client.update(updateRequest).get();  
+`  </code></pre>
+
+
+<p>Update by merging documents  </p>
+<p>合并文档  </p>
+<pre class="codehilite"><code>`UpdateRequest updateRequest = new UpdateRequest("index", "type", "1")  
+        .doc(jsonBuilder()  
+            .startObject()  
+                .field("gender", "male")  
+            .endObject());  
+client.update(updateRequest).get();  
+`  </code></pre>
+
+
+<p>Upsert  </p>
+<p>更新插入,如果存在文档就更新，如果不存在就插入  </p>
+<pre class="codehilite"><code>`IndexRequest indexRequest = new IndexRequest("index", "type", "1")  
+        .source(jsonBuilder()  
+            .startObject()  
+                .field("name", "Joe Smith")  
+                .field("gender", "male")  
+            .endObject());  
+UpdateRequest updateRequest = new UpdateRequest("index", "type", "1")  
+        .doc(jsonBuilder()  
+            .startObject()  
+                .field("gender", "male")  
+            .endObject())  
+        .upsert(indexRequest); //如果不存在此文档 ，就增加 `indexRequest`  
+client.update(updateRequest).get();  
+`  </code></pre>
+
+
+<p>如果 <code>index/type/1</code> 存在，类似下面的文档：  </p>
+<pre class="codehilite"><code>`{  
+    "name"  : "Joe Dalton",  
+    "gender": "male"          
+}  
+
+`  </code></pre>
+
+
+<p>如果不存在，会插入新的文档：  </p>
+<pre class="codehilite"><code>`{  
+    "name" : "Joe Smith",  
+    "gender": "male"  
+}  
+`  </code></pre>
+
+
+<h3 id="multi-get-api">Multi Get API</h3>
+<p>一次获取多个文档  </p>
+<pre class="codehilite"><code>`MultiGetResponse multiGetItemResponses = client.prepareMultiGet()  
+    .add("twitter", "tweet", "1") //一个id的方式  
+    .add("twitter", "tweet", "2", "3", "4") //多个id的方式  
+    .add("another", "type", "foo")  //可以从另外一个索引获取  
+    .get();  
+
+for (MultiGetItemResponse itemResponse : multiGetItemResponses) { //迭代返回值  
+    GetResponse response = itemResponse.getResponse();  
+    if (response.isExists()) {      //判断是否存在                  
+        String json = response.getSourceAsString(); //_source 字段  
+    }  
+}  
+`  </code></pre>
+
+
+<p>更多请浏览REST <a href="http://www.data-master.net/83411704">multi get</a> 文档  </p>
+<h3 id="bulk-api">Bulk API</h3>
+<p>Bulk API，批量插入：  </p>
+<pre class="codehilite"><code>`import static org.elasticsearch.common.xcontent.XContentFactory.*;  
+`  </code></pre>
+
+
+<pre class="codehilite"><code>`BulkRequestBuilder bulkRequest = client.prepareBulk();  
+
+// either use client#prepare, or use Requests# to directly build index/delete requests  
+bulkRequest.add(client.prepareIndex("twitter", "tweet", "1")  
+        .setSource(jsonBuilder()  
+                    .startObject()  
+                        .field("user", "kimchy")  
+                        .field("postDate", new Date())  
+                        .field("message", "trying out Elasticsearch")  
+                    .endObject()  
+                  )  
+        );  
+
+bulkRequest.add(client.prepareIndex("twitter", "tweet", "2")  
+        .setSource(jsonBuilder()  
+                    .startObject()  
+                        .field("user", "kimchy")  
+                        .field("postDate", new Date())  
+                        .field("message", "another post")  
+                    .endObject()  
+                  )  
+        );  
+
+BulkResponse bulkResponse = bulkRequest.get();  
+if (bulkResponse.hasFailures()) {  
+    // process failures by iterating through each bulk response item  
+    //处理失败  
+}  
+`  </code></pre>
+
+
+<h3 id="bulk-processor">使用 Bulk Processor</h3>
+<p>BulkProcessor 提供了一个简单的接口，在给定的大小数量上定时批量自动请求  </p>
+<p>创建<code>BulkProcessor</code>实例  </p>
+<p>首先创建<code>BulkProcessor</code>实例  </p>
+<pre class="codehilite"><code>`import org.elasticsearch.action.bulk.BackoffPolicy;  
+import org.elasticsearch.action.bulk.BulkProcessor;  
+import org.elasticsearch.common.unit.ByteSizeUnit;  
+import org.elasticsearch.common.unit.ByteSizeValue;  
+import org.elasticsearch.common.unit.TimeValue;  
+`  </code></pre>
+
+
+<pre class="codehilite"><code>`BulkProcessor bulkProcessor = BulkProcessor.builder(  
+        client,  //增加elasticsearch客户端  
+        new BulkProcessor.Listener() {  
+            @Override  
+            public void beforeBulk(long executionId,  
+                                   BulkRequest request) { ... } //调用bulk之前执行 ，例如你可以通过request.numberOfActions()方法知道numberOfActions  
+
+            @Override  
+            public void afterBulk(long executionId,  
+                                  BulkRequest request,  
+                                  BulkResponse response) { ... } //调用bulk之后执行 ，例如你可以通过request.hasFailures()方法知道是否执行失败  
+
+            @Override  
+            public void afterBulk(long executionId,  
+                                  BulkRequest request,  
+                                  Throwable failure) { ... } //调用失败抛 Throwable  
+        })  
+        .setBulkActions(10000) //每次10000请求  
+        .setBulkSize(new ByteSizeValue(5, ByteSizeUnit.MB)) //拆成5mb一块  
+        .setFlushInterval(TimeValue.timeValueSeconds(5)) //无论请求数量多少，每5秒钟请求一次。  
+        .setConcurrentRequests(1) //设置并发请求的数量。值为0意味着只允许执行一个请求。值为1意味着允许1并发请求。  
+        .setBackoffPolicy(  
+            BackoffPolicy.exponentialBackoff(TimeValue.timeValueMillis(100), 3))//设置自定义重复请求机制，最开始等待100毫秒，之后成倍更加，重试3次，当一次或多次重复请求失败后因为计算资源不够抛出 EsRejectedExecutionException 异常，可以通过BackoffPolicy.noBackoff()方法关闭重试机制  
+        .build();  
+`  </code></pre>
+
+
+<p>BulkProcessor 默认设置  </p>
+<ul>
+<li type="disc">bulkActions 1000  </li>
+<li type="disc">bulkSize 5mb  </li>
+<li type="disc">不设置flushInterval  </li>
+<li type="disc">concurrentRequests 为 1 ，异步执行  </li>
+<li type="disc">backoffPolicy 重试 8次，等待50毫秒  </li>
+</ul>
+<p>增加requests  </p>
+<p>然后增加<code>requests</code>到<code>BulkProcessor</code>  </p>
+<pre class="codehilite"><code>`bulkProcessor.add(new IndexRequest("twitter", "tweet", "1").source(/* your doc here */));  
+bulkProcessor.add(new DeleteRequest("twitter", "tweet", "2"));  
+`  </code></pre>
+
+
+<p>关闭 Bulk Processor  </p>
+<p>当所有文档都处理完成，使用<code>awaitClose</code> 或 <code>close</code> 方法关闭<code>BulkProcessor</code>:  </p>
+<pre class="codehilite"><code>`bulkProcessor.awaitClose(10, TimeUnit.MINUTES);  
+`  </code></pre>
+
+
+<p>或  </p>
+<pre class="codehilite"><code>`bulkProcessor.close();  
+`  </code></pre>
+
+
+<p>在测试中使用Bulk Processor  </p>
+<p>如果你在测试种使用<code>Bulk Processor</code>可以执行同步方法  </p>
+<pre class="codehilite"><code>`BulkProcessor bulkProcessor = BulkProcessor.builder(client, new BulkProcessor.Listener() { /* Listener methods */ })  
+        .setBulkActions(10000)  
+        .setConcurrentRequests(0)  
+        .build();  
+
+// Add your requests  
+bulkProcessor.add(/* Your requests */);  
+
+// Flush any remaining requests  
+bulkProcessor.flush();  
+
+// Or close the bulkProcessor if you don't need it anymore  
+bulkProcessor.close();  
+
+// Refresh your indices  
+client.admin().indices().prepareRefresh().get();  
+
+// Now you can start searching!  
+client.prepareSearch().get();  
+`  </code></pre>
+
+
+<p><a href="http://www.data-master.net/83411704">所有实例</a> 参见Git  </p>
+<p>===============================================================================================  </p>
+<p>为了讲解不同类型ES检索，我们将要对包含以下类型的文档集合进行检索：  </p>
+<pre class="codehilite"><code>` 1. title 标题；   
+ 2. authors 作者；   
+ 3. summary 摘要；   
+ 4. release data 发布日期；   
+ 5. number of reviews 评论数。  
+`  </code></pre>
+
+
+<p>首先，让我们借助 bulk API批量创建新的索引并提交数据。  </p>
+<pre class="codehilite"><code>`PUT /bookdb_index  
+    { "settings": { "number_of_shards": 1 }}  
+
+POST /bookdb_index/book/_bulk  
+    { "index": { "_id": 1 }}  
+    { "title": "Elasticsearch: The Definitive Guide", "authors": ["clinton gormley", "zachary tong"], "summary" : "A distibuted real-time search and analytics engine", "publish_date" : "2015-02-07", "num_reviews": 20, "publisher": "oreilly" }  
+    { "index": { "_id": 2 }}  
+    { "title": "Taming Text: How to Find, Organize, and Manipulate It", "authors": ["grant ingersoll", "thomas morton", "drew farris"], "summary" : "organize text using approaches such as full-text search, proper name recognition, clustering, tagging, information extraction, and summarization", "publish_date" : "2013-01-24", "num_reviews": 12, "publisher": "manning" }  
+    { "index": { "_id": 3 }}  
+    { "title": "Elasticsearch in Action", "authors": ["radu gheorge", "matthew lee hinman", "roy russo"], "summary" : "build scalable search applications using Elasticsearch without having to do complex low-level programming or understand advanced data science algorithms", "publish_date" : "2015-12-03", "num_reviews": 18, "publisher": "manning" }  
+    { "index": { "_id": 4 }}  
+    { "title": "Solr in Action", "authors": ["trey grainger", "timothy potter"], "summary" : "Comprehensive guide to implementing a scalable search engine using Apache Solr", "publish_date" : "2014-04-05", "num_reviews": 23, "publisher": "manning" }  
+`  </code></pre>
+
+
+<h1 id="1-basic-match-query">1、基本匹配检索( Basic Match Query)</h1>
+<h2 id="11_1">1.1 全文检索</h2>
+<p>有两种方式可以执行全文检索：<br>
+<strong>1）使用包含参数的检索API，参数作为URL的一部分。</strong>  </p>
+<p>举例：以下对”guide”执行全文检索。  </p>
+<pre class="codehilite"><code>`GET /bookdb_index/book/_search?q=guide  
+
+
+[Results]  
+"hits": [  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "1",  
+        "_score": 0.28168046,  
+        "_source": {  
+          "title": "Elasticsearch: The Definitive Guide",  
+          "authors": [  
+            "clinton gormley",  
+            "zachary tong"  
+          ],  
+          "summary": "A distibuted real-time search and analytics engine",  
+          "publish_date": "2015-02-07",  
+          "num_reviews": 20,  
+          "publisher": "manning"  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "4",  
+        "_score": 0.24144039,  
+        "_source": {  
+          "title": "Solr in Action",  
+          "authors": [  
+            "trey grainger",  
+            "timothy potter"  
+          ],  
+          "summary": "Comprehensive guide to implementing a scalable search engine using Apache Solr",  
+          "publish_date": "2014-04-05",  
+          "num_reviews": 23,  
+          "publisher": "manning"  
+        }  
+      }  
+    ]  
+`  </code></pre>
+
+
+<p><strong>2）使用完整的ES DSL，其中Json body作为请求体。</strong><br>
+其执行结果如方式1）结果一致。  </p>
+<pre class="codehilite"><code>`{  
+    "query": {  
+        "multi_match" : {  
+            "query" : "guide",  
+            "fields" : ["_all"]  
+        }  
+    }  
+}  
+`  </code></pre>
+
+
+<p><strong>解读：</strong>使用multi_match关键字代替match关键字，作为对多个字段运行相同查询的方便的简写方式。 fields属性指定要查询的字段，在这种情况下，我们要对文档中的所有字段进行查询。  </p>
+<h2 id="12">1.2 指定特定字段检索</h2>
+<p>这两个API也允许您指定要搜索的字段。 例如，要在标题字段中搜索带有“in action”字样的图书，<br>
+<strong>1）URL检索方式</strong><br>
+如下所示：  </p>
+<pre class="codehilite"><code>`GET /bookdb_index/book/_search?q=title:in action  
+
+[Results]  
+"hits": [  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "4",  
+        "_score": 0.6259885,  
+        "_source": {  
+          "title": "Solr in Action",  
+          "authors": [  
+            "trey grainger",  
+            "timothy potter"  
+          ],  
+          "summary": "Comprehensive guide to implementing a scalable search engine using Apache Solr",  
+          "publish_date": "2014-04-05",  
+          "num_reviews": 23,  
+          "publisher": "manning"  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "3",  
+        "_score": 0.5975345,  
+        "_source": {  
+          "title": "Elasticsearch in Action",  
+          "authors": [  
+            "radu gheorge",  
+            "matthew lee hinman",  
+            "roy russo"  
+          ],  
+          "summary": "build scalable search applications using Elasticsearch without having to do complex low-level programming or understand advanced data science algorithms",  
+          "publish_date": "2015-12-03",  
+          "num_reviews": 18,  
+          "publisher": "manning"  
+        }  
+      }  
+    ]  
+`  </code></pre>
+
+
+<p><strong>2）DSL检索方式</strong><br>
+然而，full body的DSL为您提供了创建更复杂查询的更多灵活性（我们将在后面看到）以及指定您希望的返回结果。 在下面的示例中，我们指定要返回的结果数、偏移量（对分页有用）、我们要返回的文档字段以及属性的高亮显示。<br>
+结果数的表示方式：size;<br>
+偏移值的表示方式：from;<br>
+指定返回字段 的表示方式 ：_source;<br>
+高亮显示 的表示方式 ：highliaght。  </p>
+<pre class="codehilite"><code>`POST /bookdb_index/book/_search  
+{  
+    "query": {  
+        "match" : {  
+            "title" : "in action"  
+        }  
+    },  
+    "size": 2,  
+    "from": 0,  
+    "_source": [ "title", "summary", "publish_date" ],  
+    "highlight": {  
+        "fields" : {  
+            "title" : {}  
+        }  
+    }  
+}  
+
+
+[Results]  
+"hits": {  
+    "total": 2,  
+    "max_score": 0.9105287,  
+    "hits": [  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "3",  
+        "_score": 0.9105287,  
+        "_source": {  
+          "summary": "build scalable search applications using Elasticsearch without having to do complex low-level programming or understand advanced data science algorithms",  
+          "title": "Elasticsearch in Action",  
+          "publish_date": "2015-12-03"  
+        },  
+        "highlight": {  
+          "title": [  
+            "Elasticsearch &lt;em&gt;in&lt;/em&gt; &lt;em&gt;Action&lt;/em&gt;"  
+          ]  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "4",  
+        "_score": 0.9105287,  
+        "_source": {  
+          "summary": "Comprehensive guide to implementing a scalable search engine using Apache Solr",  
+          "title": "Solr in Action",  
+          "publish_date": "2014-04-05"  
+        },  
+        "highlight": {  
+          "title": [  
+            "Solr &lt;em&gt;in&lt;/em&gt; &lt;em&gt;Action&lt;/em&gt;"  
+          ]  
+        }  
+      }  
+    ]  
+  }  
+`  </code></pre>
+
+
+<p>注意:对于 multi-word 检索，匹配查询允许您指定是否使用‘and’运算符，<br>
+而不是使用默认’or’运算符。<br>
+您还可以指定minimum_should_match选项来调整返回结果的相关性。<br>
+详细信息可以在Elasticsearch指南中查询Elasticsearch guide. 获取。  </p>
+<h1 id="2-multi-field-search">2、多字段检索 (Multi-field Search)</h1>
+<p>如我们已经看到的，要在搜索中查询多个文档字段（例如在标题和摘要中搜索相同的查询字符串），请使用multi_match查询。  </p>
+<pre class="codehilite"><code>`POST /bookdb_index/book/_search  
+{  
+    "query": {  
+        "multi_match" : {  
+            "query" : "elasticsearch guide",  
+            "fields": ["title", "summary"]  
+        }  
+    }  
+}  
+
+
+[Results]  
+"hits": {  
+    "total": 3,  
+    "max_score": 0.9448582,  
+    "hits": [  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "1",  
+        "_score": 0.9448582,  
+        "_source": {  
+          "title": "Elasticsearch: The Definitive Guide",  
+          "authors": [  
+            "clinton gormley",  
+            "zachary tong"  
+          ],  
+          "summary": "A distibuted real-time search and analytics engine",  
+          "publish_date": "2015-02-07",  
+          "num_reviews": 20,  
+          "publisher": "manning"  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "3",  
+        "_score": 0.17312013,  
+        "_source": {  
+          "title": "Elasticsearch in Action",  
+          "authors": [  
+            "radu gheorge",  
+            "matthew lee hinman",  
+            "roy russo"  
+          ],  
+          "summary": "build scalable search applications using Elasticsearch without having to do complex low-level programming or understand advanced data science algorithms",  
+          "publish_date": "2015-12-03",  
+          "num_reviews": 18,  
+          "publisher": "manning"  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "4",  
+        "_score": 0.14965448,  
+        "_source": {  
+          "title": "Solr in Action",  
+          "authors": [  
+            "trey grainger",  
+            "timothy potter"  
+          ],  
+          "summary": "Comprehensive guide to implementing a scalable search engine using Apache Solr",  
+          "publish_date": "2014-04-05",  
+          "num_reviews": 23,  
+          "publisher": "manning"  
+        }  
+      }  
+    ]  
+  }  
+`  </code></pre>
+
+
+<p><strong>注意：</strong>以上结果3匹配的原因是guide在summary存在。  </p>
+<h1 id="3-boosting-boosting">3、 Boosting提升某字段得分的检索( Boosting)</h1>
+<p>由于我们正在多个字段进行搜索，我们可能希望提高某一字段的得分。 在下面的例子中，我们将“摘要”字段的得分提高了3倍，以增加“摘要”字段的重要性，从而提高文档 4 的相关性。  </p>
+<pre class="codehilite"><code>`POST /bookdb_index/book/_search  
+{  
+    "query": {  
+        "multi_match" : {  
+            "query" : "elasticsearch guide",  
+            "fields": ["title", "summary^3"]  
+        }  
+    },  
+    "_source": ["title", "summary", "publish_date"]  
+}  
+
+
+[Results]  
+"hits": [  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "1",  
+        "_score": 0.31495273,  
+        "_source": {  
+          "summary": "A distibuted real-time search and analytics engine",  
+          "title": "Elasticsearch: The Definitive Guide",  
+          "publish_date": "2015-02-07"  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "4",  
+        "_score": 0.14965448,  
+        "_source": {  
+          "summary": "Comprehensive guide to implementing a scalable search engine using Apache Solr",  
+          "title": "Solr in Action",  
+          "publish_date": "2014-04-05"  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "3",  
+        "_score": 0.13094766,  
+        "_source": {  
+          "summary": "build scalable search applications using Elasticsearch without having to do complex low-level programming or understand advanced data science algorithms",  
+          "title": "Elasticsearch in Action",  
+          "publish_date": "2015-12-03"  
+        }  
+      }  
+    ]  
+`  </code></pre>
+
+
+<p>注意：Boosting不仅意味着计算得分乘法以增加因子。 实际的提升得分值是通过归一化和一些内部优化。参考 Elasticsearch guide.查看更多。  </p>
+<h1 id="4bool-bool-query">4、Bool检索( Bool Query)</h1>
+<p>可以使用AND / OR / NOT运算符来微调我们的搜索查询，以提供更相关或指定的搜索结果。  </p>
+<p>在搜索API中是通过bool查询来实现的。<br>
+bool查询接受”must”参数（等效于AND），一个must_not参数（相当于NOT）或者一个should参数（等同于OR）。  </p>
+<p>例如，如果我想在标题中搜索一本名为“Elasticsearch”或“Solr”的书，AND由“clinton gormley”创作，但NOT由“radu gheorge”创作：  </p>
+<pre class="codehilite"><code>`POST /bookdb_index/book/_search  
+{  
+    "query": {  
+        "bool": {  
+            "must": {  
+                "bool" : { "should": [  
+                      { "match": { "title": "Elasticsearch" }},  
+                      { "match": { "title": "Solr" }} ] }  
+            },  
+            "must": { "match": { "authors": "clinton gormely" }},  
+            "must_not": { "match": {"authors": "radu gheorge" }}  
+        }  
+    }  
+}  
+
+
+[Results]  
+"hits": [  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "1",  
+        "_score": 0.3672021,  
+        "_source": {  
+          "title": "Elasticsearch: The Definitive Guide",  
+          "authors": [  
+            "clinton gormley",  
+            "zachary tong"  
+          ],  
+          "summary": "A distibuted real-time search and analytics engine",  
+          "publish_date": "2015-02-07",  
+          "num_reviews": 20,  
+          "publisher": "oreilly"  
+        }  
+      }  
+    ]  
+`  </code></pre>
+
+
+<p><strong>注意：</strong>您可以看到，bool查询可以包含任何其他查询类型，包括其他布尔查询，以创建任意复杂或深度嵌套的查询。  </p>
+<h1 id="5-fuzzy-fuzzy-queries">5、 Fuzzy 模糊检索( Fuzzy Queries)</h1>
+<p>在 Match检索 和多匹配检索中可以启用模糊匹配来捕捉拼写错误。 基于与原始词的Levenshtein距离来指定模糊度。  </p>
+<pre class="codehilite"><code>`POST /bookdb_index/book/_search  
+{  
+    "query": {  
+        "multi_match" : {  
+            "query" : "comprihensiv guide",  
+            "fields": ["title", "summary"],  
+            "fuzziness": "AUTO"  
+        }  
+    },  
+    "_source": ["title", "summary", "publish_date"],  
+    "size": 1  
+}  
+
+
+[Results]  
+"hits": [  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "4",  
+        "_score": 0.5961596,  
+        "_source": {  
+          "summary": "Comprehensive guide to implementing a scalable search engine using Apache Solr",  
+          "title": "Solr in Action",  
+          "publish_date": "2014-04-05"  
+        }  
+      }  
+    ]  
+`  </code></pre>
+
+
+<p>“AUTO”的模糊值相当于当字段长度大于5时指定值2。但是，设置80％的拼写错误的编辑距离为1，将模糊度设置为1可能会提高整体搜索性能。 有关更多信息， Typos and Misspellingsch 。  </p>
+<h1 id="6-wildcard-query">6、 Wildcard Query 通配符检索</h1>
+<p>通配符查询允许您指定匹配的模式，而不是整个词组（term）检索。  </p>
+<ul>
+<li type="disc">？ 匹配任何字符；  </li>
+<li type="disc">*匹配零个或多个字符。  </li>
+</ul>
+<p>举例，要查找具有以“t”字母开头的作者的所有记录，如下所示：  </p>
+<pre class="codehilite"><code>`POST /bookdb_index/book/_search  
+{  
+    "query": {  
+        "wildcard" : {  
+            "authors" : "t*"  
+        }  
+    },  
+    "_source": ["title", "authors"],  
+    "highlight": {  
+        "fields" : {  
+            "authors" : {}  
+        }  
+    }  
+}  
+
+
+[Results]  
+"hits": [  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "1",  
+        "_score": 1,  
+        "_source": {  
+          "title": "Elasticsearch: The Definitive Guide",  
+          "authors": [  
+            "clinton gormley",  
+            "zachary tong"  
+          ]  
+        },  
+        "highlight": {  
+          "authors": [  
+            "zachary &lt;em&gt;tong&lt;/em&gt;"  
+          ]  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "2",  
+        "_score": 1,  
+        "_source": {  
+          "title": "Taming Text: How to Find, Organize, and Manipulate It",  
+          "authors": [  
+            "grant ingersoll",  
+            "thomas morton",  
+            "drew farris"  
+          ]  
+        },  
+        "highlight": {  
+          "authors": [  
+            "&lt;em&gt;thomas&lt;/em&gt; morton"  
+          ]  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "4",  
+        "_score": 1,  
+        "_source": {  
+          "title": "Solr in Action",  
+          "authors": [  
+            "trey grainger",  
+            "timothy potter"  
+          ]  
+        },  
+        "highlight": {  
+          "authors": [  
+            "&lt;em&gt;trey&lt;/em&gt; grainger",  
+            "&lt;em&gt;timothy&lt;/em&gt; potter"  
+          ]  
+        }  
+      }  
+    ]  
+`  </code></pre>
+
+
+<h1 id="7-regexp-query">7、正则表达式检索( Regexp Query)</h1>
+<p>正则表达式能指定比通配符检索更复杂的检索模式。<br>
+举例如下：  </p>
+<pre class="codehilite"><code>``POST /bookdb_index/book/_search  
+{  
+    "query": {  
+        "regexp" : {  
+            "authors" : "t[a-z]*y"  
+        }  
+    },  
+    "_source": ["title", "authors"],  
+    "highlight": {  
+        "fields" : {  
+            "authors" : {}  
+        }  
+    }  
+}  
+
+
+[Results]  
+"hits": [  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "4",  
+        "_score": 1,  
+        "_source": {  
+          "title": "Solr in Action",  
+          "authors": [  
+            "trey grainger",  
+            "timothy potter"  
+          ]  
+        },  
+        "highlight": {  
+          "authors": [  
+            "&lt;em&gt;trey&lt;/em&gt; grainger",  
+            "&lt;em&gt;timothy&lt;/em&gt; potter"  
+          ]  
+        }  
+      }  
+    ]  
+`  </code></pre>
+
+
+<h1 id="8-match-phrase-query">8、匹配短语检索( Match Phrase Query)</h1>
+<p>匹配短语查询要求查询字符串中的所有词都存在于文档中，按照查询字符串中指定的顺序并且彼此靠近。  </p>
+<p>默认情况下，这些词必须完全相邻，但您可以指定偏离值（slop value)，该值指示在仍然考虑文档匹配的情况下词与词之间的偏离值。  </p>
+<pre class="codehilite"><code>``POST /bookdb_index/book/_search  
+{  
+    "query": {  
+        "multi_match" : {  
+            "query": "search engine",  
+            "fields": ["title", "summary"],  
+            "type": "phrase",  
+            "slop": 3  
+        }  
+    },  
+    "_source": [ "title", "summary", "publish_date" ]  
+}  
+
+
+[Results]  
+"hits": [  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "4",  
+        "_score": 0.22327082,  
+        "_source": {  
+          "summary": "Comprehensive guide to implementing a scalable search engine using Apache Solr",  
+          "title": "Solr in Action",  
+          "publish_date": "2014-04-05"  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "1",  
+        "_score": 0.16113183,  
+        "_source": {  
+          "summary": "A distibuted real-time search and analytics engine",  
+          "title": "Elasticsearch: The Definitive Guide",  
+          "publish_date": "2015-02-07"  
+        }  
+      }  
+    ]  
+`  </code></pre>
+
+
+<p>注意：在上面的示例中，对于非短语类型查询，文档_id 1通常具有较高的分数，并且显示在文档_id 4之前，因为其字段长度较短。  </p>
+<p>然而，作为一个短语查询，词与词之间的接近度被考虑在内，所以文档_id 4分数更好。  </p>
+<h1 id="9">9、匹配词组前缀检索</h1>
+<p>匹配词组前缀查询在查询时提供搜索即时类型或“相对简单”的自动完成版本，而无需以任何方式准备数据。  </p>
+<p>像match_phrase查询一样，它接受一个斜率参数，使得单词的顺序和相对位置没有那么“严格”。 它还接受max_expansions参数来限制匹配的条件数以减少资源强度。  </p>
+<pre class="codehilite"><code>`POST /bookdb_index/book/_search  
+{  
+    "query": {  
+        "match_phrase_prefix" : {  
+            "summary": {  
+                "query": "search en",  
+                "slop": 3,  
+                "max_expansions": 10  
+            }  
+        }  
+    },  
+    "_source": [ "title", "summary", "publish_date" ]  
+}  
+
+
+[Results]  
+"hits": [  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "4",  
+        "_score": 0.5161346,  
+        "_source": {  
+          "summary": "Comprehensive guide to implementing a scalable search engine using Apache Solr",  
+          "title": "Solr in Action",  
+          "publish_date": "2014-04-05"  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "1",  
+        "_score": 0.37248808,  
+        "_source": {  
+          "summary": "A distibuted real-time search and analytics engine",  
+          "title": "Elasticsearch: The Definitive Guide",  
+          "publish_date": "2015-02-07"  
+        }  
+      }  
+    ]  
+`  </code></pre>
+
+
+<p><strong>注意：</strong>查询时间搜索类型具有性能成本。<br>
+一个更好的解决方案是将时间作为索引类型。<br>
+更多相关API查询 Completion Suggester API 或者 Edge-Ngram filters 。  </p>
+<h1 id="10-query-string">10、字符串检索（ Query String）</h1>
+<p>query_string查询提供了以简明的简写语法执行多匹配查询 multi_match queries ，布尔查询 bool queries ，提升得分 boosting ，模糊匹配 fuzzy matching ，通配符 wildcards ，正则表达式 regexp 和范围查询 range queries 的方式。  </p>
+<p>在下面的例子中，我们对“ search algorithm ”一词执行模糊搜索，其中一本作者是“ grant ingersoll ”或“tom morton”。 我们搜索所有字段，但将提升应用于文档2的摘要字段。  </p>
+<pre class="codehilite"><code>`POST /bookdb_index/book/_search  
+{  
+    "query": {  
+        "query_string" : {  
+            "query": "(saerch~1 algorithm~1) AND (grant ingersoll)  OR (tom morton)",  
+            "fields": ["_all", "summary^2"]  
+        }  
+    },  
+    "_source": [ "title", "summary", "authors" ],  
+    "highlight": {  
+        "fields" : {  
+            "summary" : {}  
+        }  
+    }  
+}  
+
+
+[Results]  
+"hits": [  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "2",  
+        "_score": 0.14558059,  
+        "_source": {  
+          "summary": "organize text using approaches such as full-text search, proper name recognition, clustering, tagging, information extraction, and summarization",  
+          "title": "Taming Text: How to Find, Organize, and Manipulate It",  
+          "authors": [  
+            "grant ingersoll",  
+            "thomas morton",  
+            "drew farris"  
+          ]  
+        },  
+        "highlight": {  
+          "summary": [  
+            "organize text using approaches such as full-text &lt;em&gt;search&lt;/em&gt;, proper name recognition, clustering, tagging, information extraction, and summarization"  
+          ]  
+        }  
+      }  
+    ]  
+`  </code></pre>
+
+
+<h1 id="11-simple-query-string">11、简化的字符串检索 （Simple Query String）</h1>
+<p>simple_query_string查询是query_string查询的一个版本，更适合用于暴露给用户的单个搜索框，<br>
+因为 它分别用+ / | / - 替换了AND / OR / NOT的使用，并放弃查询的无效部分，而不是在用户出错时抛出异常。  </p>
+<pre class="codehilite"><code>`POST /bookdb_index/book/_search  
+{  
+    "query": {  
+        "simple_query_string" : {  
+            "query": "(saerch~1 algorithm~1) + (grant ingersoll)  | (tom morton)",  
+            "fields": ["_all", "summary^2"]  
+        }  
+    },  
+    "_source": [ "title", "summary", "authors" ],  
+    "highlight": {  
+        "fields" : {  
+            "summary" : {}  
+        }  
+    }  
+}  
+`  </code></pre>
+
+
+<h1 id="12termterms">12、Term/Terms检索（指定字段检索）</h1>
+<p>上面1-11小节的例子是全文搜索的例子。 有时我们对结构化搜索更感兴趣，我们希望在其中找到完全匹配并返回结果。  </p>
+<p>在下面的例子中，我们搜索Manning Publications发布的索引中的所有图书（借助 term和terms查询 ）。  </p>
+<pre class="codehilite"><code>`POST /bookdb_index/book/_search  
+{  
+    "query": {  
+        "term" : {  
+            "publisher": "manning"  
+        }  
+    },  
+    "_source" : ["title","publish_date","publisher"]  
+}  
+
+
+[Results]  
+"hits": [  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "2",  
+        "_score": 1.2231436,  
+        "_source": {  
+          "publisher": "manning",  
+          "title": "Taming Text: How to Find, Organize, and Manipulate It",  
+          "publish_date": "2013-01-24"  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "3",  
+        "_score": 1.2231436,  
+        "_source": {  
+          "publisher": "manning",  
+          "title": "Elasticsearch in Action",  
+          "publish_date": "2015-12-03"  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "4",  
+        "_score": 1.2231436,  
+        "_source": {  
+          "publisher": "manning",  
+          "title": "Solr in Action",  
+          "publish_date": "2014-04-05"  
+        }  
+      }  
+    ]`  
+`  </code></pre>
+
+
+<p>Multiple terms可指定多个关键词进行检索。  </p>
+<pre class="codehilite"><code>``{  
+    "query": {  
+        "terms" : {  
+            "publisher": ["oreilly", "packt"]  
+        }  
+    }  
+}  
+`  </code></pre>
+
+
+<h1 id="13term-term-query-sorted">13、Term排序检索-（Term Query - Sorted）</h1>
+<p>Term查询和其他查询一样，轻松的实现排序。多级排序也是允许的。  </p>
+<pre class="codehilite"><code>`POST /bookdb_index/book/_search  
+{  
+    "query": {  
+        "term" : {  
+            "publisher": "manning"  
+        }  
+    },  
+    "_source" : ["title","publish_date","publisher"],  
+    "sort": [  
+        { "publish_date": {"order":"desc"}},  
+        { "title": { "order": "desc" }}  
+    ]  
+}  
+
+
+[Results]  
+"hits": [  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "3",  
+        "_score": null,  
+        "_source": {  
+          "publisher": "manning",  
+          "title": "Elasticsearch in Action",  
+          "publish_date": "2015-12-03"  
+        },  
+        "sort": [  
+          1449100800000,  
+          "in"  
+        ]  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "4",  
+        "_score": null,  
+        "_source": {  
+          "publisher": "manning",  
+          "title": "Solr in Action",  
+          "publish_date": "2014-04-05"  
+        },  
+        "sort": [  
+          1396656000000,  
+          "solr"  
+        ]  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "2",  
+        "_score": null,  
+        "_source": {  
+          "publisher": "manning",  
+          "title": "Taming Text: How to Find, Organize, and Manipulate It",  
+          "publish_date": "2013-01-24"  
+        },  
+        "sort": [  
+          1358985600000,  
+          "to"  
+        ]  
+      }  
+    ]  
+`  </code></pre>
+
+
+<h1 id="14range-query">14、范围检索（Range query）</h1>
+<p>另一个结构化检索的例子是范围检索。下面的举例中，我们检索了2015年发布的书籍。  </p>
+<pre class="codehilite"><code>`POST /bookdb_index/book/_search  
+{  
+    "query": {  
+        "range" : {  
+            "publish_date": {  
+                "gte": "2015-01-01",  
+                "lte": "2015-12-31"  
+            }  
+        }  
+    },  
+    "_source" : ["title","publish_date","publisher"]  
+}  
+
+
+[Results]  
+"hits": [  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "1",  
+        "_score": 1,  
+        "_source": {  
+          "publisher": "oreilly",  
+          "title": "Elasticsearch: The Definitive Guide",  
+          "publish_date": "2015-02-07"  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "3",  
+        "_score": 1,  
+        "_source": {  
+          "publisher": "manning",  
+          "title": "Elasticsearch in Action",  
+          "publish_date": "2015-12-03"  
+        }  
+      }  
+    ]  
+`  </code></pre>
+
+
+<p>注意：范围查询适用于日期，数字和字符串类型字段。  </p>
+<h1 id="15filtered-query50">15、过滤检索（Filtered query）5.0版本已不再存在，不必关注。</h1>
+<p>过滤的查询允许您过滤查询的结果。 如下的例子，我们在标题或摘要中查询名为“Elasticsearch”的图书，但是我们希望将结果过滤到只有20个或更多评论的结果。  </p>
+<pre class="codehilite"><code>`POST /bookdb_index/book/_search  
+{  
+    "query": {  
+        "filtered": {  
+            "query" : {  
+                "multi_match": {  
+                    "query": "elasticsearch",  
+                    "fields": ["title","summary"]  
+                }  
+            },  
+            "filter": {  
+                "range" : {  
+                    "num_reviews": {  
+                        "gte": 20  
+                    }  
+                }  
+            }  
+        }  
+    },  
+    "_source" : ["title","summary","publisher", "num_reviews"]  
+}  
+
+
+[Results]  
+"hits": [  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "1",  
+        "_score": 0.5955761,  
+        "_source": {  
+          "summary": "A distibuted real-time search and analytics engine",  
+          "publisher": "oreilly",  
+          "num_reviews": 20,  
+          "title": "Elasticsearch: The Definitive Guide"  
+        }  
+      }  
+    ]  
+`  </code></pre>
+
+
+<p>注意：已过滤的查询不要求存在要过滤的查询。 如果没有指定查询，则运行match_all查询，基本上返回索引中的所有文档，然后对其进行过滤。  </p>
+<p>实际上，首先运行过滤器，减少需要查询的表面积。 此外，过滤器在第一次使用后被缓存，这使得它非常有效。  </p>
+<p><strong>更新：已筛选的查询已推出的Elasticsearch 5.X版本中移除，有利于布尔查询。 这是与上面重写的使用bool查询相同的示例。 返回的结果是完全一样的。</strong>  </p>
+<pre class="codehilite"><code>`POST /bookdb_index/book/_search  
+{  
+    "query": {  
+        "bool": {  
+            "must" : {  
+                "multi_match": {  
+                    "query": "elasticsearch",  
+                    "fields": ["title","summary"]  
+                }  
+            },  
+            "filter": {  
+                "range" : {  
+                    "num_reviews": {  
+                        "gte": 20  
+                    }  
+                }  
+            }  
+        }  
+    },  
+    "_source" : ["title","summary","publisher", "num_reviews"]  
+}  
+`  </code></pre>
+
+
+<h1 id="16multiple-filters5x">16、多个过滤器检索（Multiple Filters）5.x不再支持，无需关注。</h1>
+<p>多个过滤器可以通过使用布尔过滤器进行组合。  </p>
+<p>在下一个示例中，过滤器确定返回的结果必须至少包含20个评论，不得在2015年之前发布，并且应该由oreilly发布。  </p>
+<pre class="codehilite"><code>`POST /bookdb_index/book/_search  
+{  
+    "query": {  
+        "filtered": {  
+            "query" : {  
+                "multi_match": {  
+                    "query": "elasticsearch",  
+                    "fields": ["title","summary"]  
+                }  
+            },  
+            "filter": {  
+                "bool": {  
+                    "must": {  
+                        "range" : { "num_reviews": { "gte": 20 } }  
+                    },  
+                    "must_not": {  
+                        "range" : { "publish_date": { "lte": "2014-12-31" } }  
+                    },  
+                    "should": {  
+                        "term": { "publisher": "oreilly" }  
+                    }  
+                }  
+            }  
+        }  
+    },  
+    "_source" : ["title","summary","publisher", "num_reviews", "publish_date"]  
+}  
+
+
+[Results]  
+"hits": [  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "1",  
+        "_score": 0.5955761,  
+        "_source": {  
+          "summary": "A distibuted real-time search and analytics engine",  
+          "publisher": "oreilly",  
+          "num_reviews": 20,  
+          "title": "Elasticsearch: The Definitive Guide",  
+          "publish_date": "2015-02-07"  
+        }  
+      }  
+    ]  
+`  </code></pre>
+
+
+<h1 id="17-function-field-function-score-field-value-factor">17、 Function 得分：Field值因子（ Function Score: Field Value Factor）</h1>
+<p>可能有一种情况，您想要将文档中特定字段的值纳入相关性分数的计算。 这在您希望基于其受欢迎程度提升文档的相关性的情况下是有代表性的场景。  </p>
+<p>在我们的例子中，我们希望增加更受欢迎的书籍（按评论数量判断）。 这可以使用field_value_factor函数得分。  </p>
+<pre class="codehilite"><code>`POST /bookdb_index/book/_search  
+{  
+    "query": {  
+        "function_score": {  
+            "query": {  
+                "multi_match" : {  
+                    "query" : "search engine",  
+                    "fields": ["title", "summary"]  
+                }  
+            },  
+            "field_value_factor": {  
+                "field" : "num_reviews",  
+                "modifier": "log1p",  
+                "factor" : 2  
+            }  
+        }  
+    },  
+    "_source": ["title", "summary", "publish_date", "num_reviews"]  
+}  
+
+
+[Results]  
+"hits": [  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "1",  
+        "_score": 0.44831306,  
+        "_source": {  
+          "summary": "A distibuted real-time search and analytics engine",  
+          "num_reviews": 20,  
+          "title": "Elasticsearch: The Definitive Guide",  
+          "publish_date": "2015-02-07"  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "4",  
+        "_score": 0.3718407,  
+        "_source": {  
+          "summary": "Comprehensive guide to implementing a scalable search engine using Apache Solr",  
+          "num_reviews": 23,  
+          "title": "Solr in Action",  
+          "publish_date": "2014-04-05"  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "3",  
+        "_score": 0.046479136,  
+        "_source": {  
+          "summary": "build scalable search applications using Elasticsearch without having to do complex low-level programming or understand advanced data science algorithms",  
+          "num_reviews": 18,  
+          "title": "Elasticsearch in Action",  
+          "publish_date": "2015-12-03"  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "2",  
+        "_score": 0.041432835,  
+        "_source": {  
+          "summary": "organize text using approaches such as full-text search, proper name recognition, clustering, tagging, information extraction, and summarization",  
+          "num_reviews": 12,  
+          "title": "Taming Text: How to Find, Organize, and Manipulate It",  
+          "publish_date": "2013-01-24"  
+        }  
+      }  
+    ]  
+`  </code></pre>
+
+
+<p><strong>注1：</strong>我们可以运行一个常规的multi_match查询，并按num_reviews字段排序，但是我们失去了相关性得分的好处。  </p>
+<p><strong>注2：</strong>有许多附加参数可以调整对原始相关性分数<br>
+（如“ modifier ”，“ factor ”，“boost_mode”等）的增强效果的程度。  </p>
+<p>详见 Elasticsearch guide.  </p>
+<h1 id="18-function-function-score-decay-functions">18、 Function 得分：衰减函数( Function Score: Decay Functions )</h1>
+<p>假设，我们不是想通过一个字段的值逐渐增加得分，以获取理想的结果。 举例：价格范围、数字字段范围、日期范围。 在我们的例子中，我们正在搜索2014年6月左右出版的“ search engines ”的书籍。  </p>
+<pre class="codehilite"><code>`POST /bookdb_index/book/_search  
+{  
+    "query": {  
+        "function_score": {  
+            "query": {  
+                "multi_match" : {  
+                    "query" : "search engine",  
+                    "fields": ["title", "summary"]  
+                }  
+            },  
+            "functions": [  
+                {  
+                    "exp": {  
+                        "publish_date" : {  
+                            "origin": "2014-06-15",  
+                            "offset": "7d",  
+                            "scale" : "30d"  
+                        }  
+                    }  
+                }  
+            ],  
+            "boost_mode" : "replace"  
+        }  
+    },  
+    "_source": ["title", "summary", "publish_date", "num_reviews"]  
+}  
+
+
+[Results]  
+"hits": [  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "4",  
+        "_score": 0.27420625,  
+        "_source": {  
+          "summary": "Comprehensive guide to implementing a scalable search engine using Apache Solr",  
+          "num_reviews": 23,  
+          "title": "Solr in Action",  
+          "publish_date": "2014-04-05"  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "1",  
+        "_score": 0.005920768,  
+        "_source": {  
+          "summary": "A distibuted real-time search and analytics engine",  
+          "num_reviews": 20,  
+          "title": "Elasticsearch: The Definitive Guide",  
+          "publish_date": "2015-02-07"  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "2",  
+        "_score": 0.000011564,  
+        "_source": {  
+          "summary": "organize text using approaches such as full-text search, proper name recognition, clustering, tagging, information extraction, and summarization",  
+          "num_reviews": 12,  
+          "title": "Taming Text: How to Find, Organize, and Manipulate It",  
+          "publish_date": "2013-01-24"  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "3",  
+        "_score": 0.0000059171475,  
+        "_source": {  
+          "summary": "build scalable search applications using Elasticsearch without having to do complex low-level programming or understand advanced data science algorithms",  
+          "num_reviews": 18,  
+          "title": "Elasticsearch in Action",  
+          "publish_date": "2015-12-03"  
+        }  
+      }  
+    ]  
+`  </code></pre>
+
+
+<h1 id="19function-function-score-script-scoring">19、Function得分：脚本得分（ Function Score: Script Scoring ）</h1>
+<p>在内置计分功能不符合您需求的情况下，可以选择指定用于评分的Groovy脚本。  </p>
+<p>在我们的示例中，我们要指定一个考虑到publish_date的脚本，然后再决定考虑多少评论。 较新的书籍可能没有这么多的评论，所以他们不应该为此付出“代价”。  </p>
+<p>得分脚本如下所示：  </p>
+<pre class="codehilite"><code>`publish_date = doc['publish_date'].value  
+num_reviews = doc['num_reviews'].value  
+
+if (publish_date &gt; Date.parse('yyyy-MM-dd', threshold).getTime()) {  
+  my_score = Math.log(2.5 + num_reviews)  
+} else {  
+  my_score = Math.log(1 + num_reviews)  
+}  
+return my_score`  
+`  </code></pre>
+
+
+<p>要动态使用评分脚本，我们使用script_score参数：  </p>
+<pre class="codehilite"><code>`POST /bookdb_index/book/_search  
+{  
+    "query": {  
+        "function_score": {  
+            "query": {  
+                "multi_match" : {  
+                    "query" : "search engine",  
+                    "fields": ["title", "summary"]  
+                }  
+            },  
+            "functions": [  
+                {  
+                    "script_score": {  
+                        "params" : {  
+                            "threshold": "2015-07-30"  
+                        },  
+                        "script": "publish_date = doc['publish_date'].value; num_reviews = doc['num_reviews'].value; if (publish_date &gt; Date.parse('yyyy-MM-dd', threshold).getTime()) { return log(2.5 + num_reviews) }; return log(1 + num_reviews);"  
+                    }  
+                }  
+            ]  
+        }  
+    },  
+    "_source": ["title", "summary", "publish_date", "num_reviews"]  
+}  
+
+
+[Results]  
+"hits": {  
+    "total": 4,  
+    "max_score": 0.8463001,  
+    "hits": [  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "1",  
+        "_score": 0.8463001,  
+        "_source": {  
+          "summary": "A distibuted real-time search and analytics engine",  
+          "num_reviews": 20,  
+          "title": "Elasticsearch: The Definitive Guide",  
+          "publish_date": "2015-02-07"  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "4",  
+        "_score": 0.7067348,  
+        "_source": {  
+          "summary": "Comprehensive guide to implementing a scalable search engine using Apache Solr",  
+          "num_reviews": 23,  
+          "title": "Solr in Action",  
+          "publish_date": "2014-04-05"  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "3",  
+        "_score": 0.08952084,  
+        "_source": {  
+          "summary": "build scalable search applications using Elasticsearch without having to do complex low-level programming or understand advanced data science algorithms",  
+          "num_reviews": 18,  
+          "title": "Elasticsearch in Action",  
+          "publish_date": "2015-12-03"  
+        }  
+      },  
+      {  
+        "_index": "bookdb_index",  
+        "_type": "book",  
+        "_id": "2",  
+        "_score": 0.07602123,  
+        "_source": {  
+          "summary": "organize text using approaches such as full-text search, proper name recognition, clustering, tagging, information extraction, and summarization",  
+          "num_reviews": 12,  
+          "title": "Taming Text: How to Find, Organize, and Manipulate It",  
+          "publish_date": "2013-01-24"  
+        }  
+      }  
+    ]  
+  }  
+`  </code></pre>
+
+
+<p><strong>注1：</strong>要使用动态脚本，必须为config / elasticsearch.yml文件中的Elasticsearch实例启用它。 也可以使用已经存储在Elasticsearch服务器上的脚本。 查看 Elasticsearch reference docs 以获取更多信息。<br>
+<strong>注2：</strong>JSON不能包含嵌入的换行符，因此分号用于分隔语句。  </p>
+<p>转自：<a href="https://blog.csdn.net/laoyang360/article/details/76769208?utm_source=copy">https://blog.csdn.net/laoyang360/article/details/76769208?utm_source=copy</a>  </p>
+<p>参考：<a href="https://github.com/quanke/elasticsearch-java">https://github.com/quanke/elasticsearch-java</a>  </p>
+<p><a href="https://es.xiaoleilu.com/040_Distributed_CRUD/00_Intro.html">https://es.xiaoleilu.com/040_Distributed_CRUD/00_Intro.html</a>  </p>
+<p><a href="https://github.com/elasticsearch-cn/elasticsearch-definitive-guide">https://github.com/elasticsearch-cn/elasticsearch-definitive-guide</a>  </p>
+<h1 id="pythondemo">python查询demo</h1>
+<pre class="codehilite"><code>`  
+import json  
+import os  
+
+search ={  
+    "query": {  
+        "bool": {  
+            "must": [  
+                {  
+                    "query_string": {  
+                        "fields": [  
+                            "log"  
+                        ],  
+                        "analyze_wildcard": True,  
+                        "query": "error OR ERROR"  
+                    }  
+                }  
+            ],  
+            "filter": [  
+                {  
+                    "term": {  
+                        "kubernetes.namespace_name": "cloudai-2"  
+                    }  
+                },  
+                {  
+                    "term": {  
+                        "kubernetes.container_name": "backend-traffic-container grpc-container backend-mqtt-container traffic-container"  
+                    }  
+                },  
+                {  
+                    "range": {  
+                        "@timestamp": {  
+                            "gte": "now-120m",  
+                            "lte": "now"  
+                        }  
+                    }  
+                }  
+            ]  
+        }  
+    }  
+}  
+
+
+
+linuxcommand = "curl -H 'Content-Type: application/json' -XPOST '192.168.11.127:31001/_search?pretty' -d '"+json.dumps(search)+"'"  
+# print(linuxcommand)  
+back = os.popen(linuxcommand).read()  # 查询一个记录试试  
+back = json.loads(back)  
+print(back)  
+
+
+
+
+`  </code></pre>
+            </article>
+        </div>
+        <!--<div class="col-lg-12">-->
+        <!--<div class="ps-shoe mb-30" >-->
+        <!--<div class="ps-shoe__thumbnail">-->
+        <!--&lt;!&ndash;<div class="ps-badge"><span>New</span></div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="ps-badge ps-badge--sale ps-badge--2nd"><span>-35%</span></div>&ndash;&gt;-->
+        <!--<a class="ps-shoe__favorite" href="#"><i class="ps-icon-heart"></i></a>-->
+        <!--<p>这里没有更多的题了哦！请先阅读其他内�?/p>-->
+        <!--&lt;!&ndash;<a class="ps-shoe__overlay" href="product-detail.html"></a>&ndash;&gt;-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-lg-12">-->
+        <!--<div class="ps-shoe mb-30" >-->
+        <!--<div class="ps-shoe__thumbnail">-->
+        <!--&lt;!&ndash;<div class="ps-badge"><span>New</span></div>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="ps-badge ps-badge--sale ps-badge--2nd"><span>-35%</span></div>&ndash;&gt;-->
+        <!--<a class="ps-shoe__favorite" href="#"><i class="ps-icon-heart"></i></a>-->
+        <!--&lt;!&ndash;<p>11111111111111111111111111111111111111111111111111111111</p>&ndash;&gt;-->
+        <!--&lt;!&ndash;<a class="ps-shoe__overlay" href="product-detail.html"></a>&ndash;&gt;-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+    </div>
+    <div class="ps-product-action">
+        <!--<div class="ps-product__filter">-->
+        <!--<select class="ps-select selectpicker">-->
+        <!--<option value="1">Shortby</option>-->
+        <!--<option value="2">Name</option>-->
+        <!--<option value="3">Price (Low to High)</option>-->
+        <!--<option value="3">Price (High to Low)</option>-->
+        <!--</select>-->
+        <!--</div>-->
+        <!--<div class="ps-pagination">-->
+        <!--<ul class="pagination">-->
+        <!--<li><a href="#" onclick="change_page(this)"><i class="fa fa-angle-left"></i></a></li>-->
+        <!--<li class="active"><a href="#" onclick="submit_page_info()">1</a></li>-->
+        <!--<li><a href="#" onclick="submit_page_info()">2</a></li>-->
+        <!--<li><a href="#" onclick="submit_page_info()">3</a></li>-->
+        <!--<li><a href="#" onclick="submit_page_info()">4</a></li>-->
+        <!--<li><a href="#" onclick="change_page(this)"><i class="fa fa-angle-right"></i></a></li>-->
+        <!--</ul>-->
+        <!--</div>-->
+    </div>
+</div>
+
+<div class="ps-sidebar" data-mh="product-listing" style="right: 0px;">
+<aside class="ps-widget--sidebar ps-widget--category">
+    <div class="ps-widget__header">
+        <h3>排行榜</h3>
+        <img src="./ES基本查询总结_files/e9e686fea1d524ff0a96b50528c91dad_259_194.jpg">
+    </div>
+    <!--<div class="ps-widget__content">-->
+        <!--<ul class="ps-list--checked">-->
+            <!--<li>-->
+                <!--<div class="radio">-->
+                    <!--<label>-->
+                        <!--<input type="radio" name="optionsRadios1" value="error"> 只看错题-->
+                    <!--</label>-->
+                <!--</div>-->
+                <!--<div class="radio">-->
+                    <!--<label>-->
+                        <!--<input type="radio" name="optionsRadios1" value="shoucang"> 只看收藏的问�?->
+                    <!--</label>-->
+                <!--</div>-->
+                <!--<div class="radio">-->
+                    <!--<label>-->
+                        <!--<input type="radio" name="optionsRadios1" value="new"> 只看新题-->
+                    <!--</label>-->
+                <!--</div>-->
+                <!--<div class="radio">-->
+                    <!--<label>-->
+                        <!--<input type="radio" name="optionsRadios1" value="all" checked> 看全部问�?->
+                    <!--</label>-->
+                <!--</div>-->
+                <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                <!--&lt;!&ndash;&lt;!&ndash;<li class="current"><a href="product-listing.html">Life(521)</a></li>&ndash;&gt;&ndash;&gt;-->
+                <!--&lt;!&ndash;<li><input type="radio" value="">  只看错题&ndash;&gt;-->
+                <!--&lt;!&ndash;<input type="radio" value="">  只看收藏的问�?/li>&ndash;&gt;-->
+                <!--&lt;!&ndash;<li><input type="radio" value="">  只看收藏的问�?/li>&ndash;&gt;-->
+                <!--&lt;!&ndash;<li><input type="radio" value="">  看全部问�?/li>&ndash;&gt;-->
+                <!--&lt;!&ndash;&lt;!&ndash;<li><a href="product-listing.html">Soccer(108)</a></li>&ndash;&gt;&ndash;&gt;-->
+                <!--&lt;!&ndash;&lt;!&ndash;<li><a href="product-listing.html">Trainning & game(47)</a></li>&ndash;&gt;&ndash;&gt;-->
+                <!--&lt;!&ndash;&lt;!&ndash;<li><a href="product-listing.html">More</a></li>&ndash;&gt;&ndash;&gt;-->
+            <!--</li>-->
+        <!--</ul>-->
+    <!--</div>-->
+</aside>
+
+</div>
+</div>
+<div class="ps-subscribe">
+    <!--<div class="ps-container">-->
+    <!--<div class="row">-->
+    <!--<div class="col-lg-3 col-md-12 col-sm-12 col-xs-12 ">-->
+    <!--<h3><i class="fa fa-envelope"></i>Sign up to Newsletter</h3>-->
+    <!--</div>-->
+    <!--<div class="col-lg-5 col-md-7 col-sm-12 col-xs-12 ">-->
+    <!--<form class="ps-subscribe__form" action="do_action" method="post">-->
+    <!--<input class="form-control" type="text" placeholder="">-->
+    <!--<button>Sign up now</button>-->
+    <!--</form>-->
+    <!--</div>-->
+    <!--<div class="col-lg-4 col-md-5 col-sm-12 col-xs-12 ">-->
+    <!--<p>...and receive  <span>$20</span>  coupon for first shopping.</p>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+</div>
+<!--<br>-->
+<div class="ps-footer bg--cover" data-background="images/background/parallax.png" style="background: url(&quot;images/background/parallax.png&quot;);">
+    <div class="ps-footer__content">
+          <div class="ps-container">
+              <div class="row">
+                  <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">
+                      <aside class="ps-widget--footer ps-widget--info">
+                          <header><a class="ps-logo" href="http://www.data-master.net/homepage.html"><img src="./ES基本查询总结_files/DataMaster_logo_2.png" alt=""></a>
+                              <h3 class="ps-widget__title">联系方式</h3>
+                          </header>
+                          <footer>
+                              <p><strong>广东深圳</strong></p>
+                              <p>Email_1: <a href="mailto:support@store.com">luanpenguestc@sina.com</a></p>
+                              <p>Email_2: <a href="mailto:support@store.com">cdllp1993@sina.com</a></p>
+                              <!--<p>Phone: +323 32434 5334</p>-->
+                              <!--<p>Fax: ++323 32434 5333</p>-->
+                          </footer>
+                      </aside>
+                  </div>
+                  <!--<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 ">-->
+                  <!--<aside class="ps-widget--footer ps-widget--info second">-->
+                  <!--<header>-->
+                  <!--<h3 class="ps-widget__title">联系方式</h3>-->
+                  <!--</header>-->
+                  <!--<footer>-->
+                  <!--<p><strong>广东深圳</strong></p>-->
+                  <!--<p>Email_1: <a href='mailto:support@store.com'>luanpenguestc@sina.com</a></p>-->
+                  <!--<p>Email_2: <a href='mailto:support@store.com'>cdllp1993@sina.com</a></p>-->
+                  <!--&lt;!&ndash;<p>Phone: +323 32434 5334</p>&ndash;&gt;-->
+                  <!--&lt;!&ndash;<p>Fax: ++323 32434 5333</p>&ndash;&gt;-->
+                  <!--</footer>-->
+                  <!--</aside>-->
+                  <!--</div>-->
+                  <!--<div class="col-lg-2 col-md-2 col-sm-4 col-xs-12 ">-->
+                  <!--<aside class="ps-widget--footer ps-widget--link">-->
+                  <!--<header>-->
+                  <!--<h3 class="ps-widget__title">Find Our store</h3>-->
+                  <!--</header>-->
+                  <!--<footer>-->
+                  <!--<ul class="ps-list--link">-->
+                  <!--<li><a href="#">Coupon Code</a></li>-->
+                  <!--<li><a href="#">SignUp For Email</a></li>-->
+                  <!--<li><a href="#">Site Feedback</a></li>-->
+                  <!--<li><a href="#">Careers</a></li>-->
+                  <!--</ul>-->
+                  <!--</footer>-->
+                  <!--</aside>-->
+                  <!--</div>-->
+                  <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12 ">
+                      <aside class="ps-widget--footer ps-widget--link">
+                          <header>
+                              <h3 class="ps-widget__title">帮助信息</h3>
+                          </header>
+                          <footer>
+                              <ul class="ps-list--line">
+                                  <li><a href="http://www.data-master.net/83411704#">学习路线</a></li>
+                                  <li><a href="http://www.data-master.net/feedback.html" target="_blank">意见反馈</a></li>
+                                  <!--<li><a href="#">社群申请</a></li>-->
+                                  <!--<li><a href="#">Payment Options</a></li>-->
+                                  <!--<li><a href="#">Contact Us</a></li>-->
+                              </ul>
+                          </footer>
+                      </aside>
+                  </div>
+                  <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12 ">
+                      <aside class="ps-widget--footer ps-widget--link">
+                          <header>
+                              <h3 class="ps-widget__title">我们的产品</h3>
+                          </header>
+                          <footer>
+                              <ul class="ps-list--line">
+                                  <li><a href="http://www.data-master.net/homepage.html" target="_blank">博客</a></li>
+                                  <li><a href="http://www.data-master.net/product-listing.html" target="_blank">测试</a></li>
+                                  <li><a href="http://www.data-master.net/ToolsListing.html" target="_blank">实用工具</a></li>
+                                  <li><a href="http://www.data-master.net/4" target="_blank">Matlab2C语言转换工具</a></li>
+                              </ul>
+                          </footer>
+                      </aside>
+                  </div>
+                  <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12 ">
+                      <aside class="ps-widget--footer ps-widget--link">
+                          <header>
+                              <h3 class="ps-widget__title">友情链接</h3>
+                          </header>
+                          <footer>
+                              <ul class="ps-list--line">
+                                  <li><a href="https://yiyibooks.cn/xx/python_352/index.html" target="_blank">Python中文手册</a></li>
+                                  <li><a href="https://www.aliyun.com/jiaocheng/438542.html" target="_blank">Pandas速查</a></li>
+                                  <li><a href="https://www.numpy.org.cn/" target="_blank">Numpy中文手册</a></li>
+                                  <li><a href="https://www.coursera.org/learn/machine-learning/" target="_blank">机器学习入门公开课</a></li>
+                              </ul>
+                          </footer>
+                      </aside>
+                  </div>
+              </div>
+          </div>
+      </div>
+    <div class="ps-footer__copyright">
+        <div class="ps-container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="text-align: center">
+                    <p>Copyright © 2018.DataMaster.<span>粤ICP备18159754号-1</span>  <span>粤公网安备44030502003703号</span> <a href="http://www.data-master.net/83411704" target="_blank">数据极</a></p>
+                </div>
+                <!--<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">-->
+                <!--&lt;!&ndash;<ul class="ps-social">&ndash;&gt;-->
+                <!--&lt;!&ndash;<li><a href="#"><i class="fa fa-facebook"></i></a></li>&ndash;&gt;-->
+                <!--&lt;!&ndash;<li><a href="#"><i class="fa fa-google-plus"></i></a></li>&ndash;&gt;-->
+                <!--&lt;!&ndash;<li><a href="#"><i class="fa fa-twitter"></i></a></li>&ndash;&gt;-->
+                <!--&lt;!&ndash;<li><a href="#"><i class="fa fa-instagram"></i></a></li>&ndash;&gt;-->
+                <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+</div>
+</main>
+<!-- JS Library-->
+<script type="text/javascript" src="./ES基本查询总结_files/jquery.min.js.下载" defer=""></script>   <!-- 这个改了就没内容了，不能删-->
+<!--<script type="text/javascript" src="plugins/bootstrap/dist/js/bootstrap.min.js"></script>-->
+<script type="text/javascript" src="./ES基本查询总结_files/jquery.barrating.min.js.下载" defer=""></script>   <!-- 这个是轮播的，不能删-->
+<script type="text/javascript" src="./ES基本查询总结_files/owl.carousel.min.js.下载" defer=""></script>    <!-- 这个是轮播的，不能删-->
+<script src="./ES基本查询总结_files/register.js.下载" defer=""></script>
+<script type="text/javascript" src="./ES基本查询总结_files/MathJax.js.下载" defer=""></script>
+<!--<script type="text/javascript" src="js/MathJax.js" defer></script>-->
+<!--<script type="text/javascript" src="plugins/gmap3.min.js"></script>-->
+<!--<script type="text/javascript" src="plugins/imagesloaded.pkgd.js"></script>-->
+<!--<script type="text/javascript" src="plugins/isotope.pkgd.min.js"></script>-->
+<!--<script type="text/javascript" src="plugins/bootstrap-select/dist/js/bootstrap-select.min.js"></script>-->
+<!--<script type="text/javascript" src="plugins/jquery.matchHeight-min.js"></script>-->
+<!--<script type="text/javascript" src="plugins/slick/slick/slick.min.js"></script>-->
+<!--<script type="text/javascript" src="plugins/elevatezoom/jquery.elevatezoom.js"></script>-->
+<!--<script type="text/javascript" src="plugins/Magnific-Popup/dist/jquery.magnific-popup.min.js"></script>-->
+<!--<script type="text/javascript" src="plugins/jquery-ui/jquery-ui.min.js"></script>-->
+<!--<script type="text/javascript" src="http://ditu.google.cn/maps/api/js?key=AIzaSyAx39JFH5nhxze1ZydH-Kl8xXM3OK4fvcg&amp;region=GB"></script>-->
+<!--<script type="text/javascript" src="plugins/revolution/js/jquery.themepunch.tools.min.js"></script>-->
+<!--<script type="text/javascript" src="plugins/revolution/js/jquery.themepunch.revolution.min.js"></script>-->
+<!--<script type="text/javascript" src="plugins/revolution/js/extensions/revolution.extension.video.min.js"></script>-->
+<!--<script type="text/javascript" src="plugins/revolution/js/extensions/revolution.extension.slideanims.min.js"></script>-->
+<!--<script type="text/javascript" src="plugins/revolution/js/extensions/revolution.extension.layeranimation.min.js"></script>-->
+<!--<script type="text/javascript" src="plugins/revolution/js/extensions/revolution.extension.navigation.min.js"></script>-->
+<!--<script type="text/javascript" src="plugins/revolution/js/extensions/revolution.extension.parallax.min.js"></script>-->
+<!--<script type="text/javascript" src="plugins/revolution/js/extensions/revolution.extension.actions.min.js"></script>-->
+<!-- Custom scripts-->
+<script type="text/javascript" src="./ES基本查询总结_files/main.js.下载" defer=""></script>
+<script type="text/javascript" src="./ES基本查询总结_files/z_stat.php"></script><script src="./ES基本查询总结_files/core.php" charset="utf-8" type="text/javascript"></script><a href="https://www.cnzz.com/stat/website.php?web_id=1277587115" target="_blank" title="站长统计">站长统计</a>
+
+</body></html>

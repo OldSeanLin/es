@@ -1,0 +1,78 @@
+/**
+ * Created by cdl on 18-9-8.
+ */
+function callback(backstr){
+//    alert("hhhhhhhhhhhhhhhh");
+    console.log(backstr)
+    if(backstr.status == "0"){
+        localStorage["luanpeng_user"] =JSON.stringify(backstr.result);
+        window.location.href="login.html";
+    }else{
+        alert(backstr.message);
+//        $("#login_button").innerText="登陆";
+    }
+}
+
+function register(){
+    console.log("hh");
+    var email = "";
+    var passwd = "";
+    var confirm_passwd = "";
+    var email_tail_list = ["qq.com","163.com","sina.com","google.com","edu.com"]
+    email = $("#email").val();
+//    alert(email)
+    passwd = $("#passwd").val();
+    confirm_passwd = $("#confirm_passwd").val();
+    if(email.indexOf("@")>0){
+        var tail = email.substr(email.indexOf("@")+1)
+//        alert(tail)
+        if(email_tail_list.indexOf(tail)<0){
+            alert("您输入的邮箱格式不合理，请更换邮箱！谢谢")
+            return;
+        }
+    }else{
+        alert("您输入的邮箱格式不合理，请更换邮箱！谢谢")
+        return
+    }
+    if(passwd=="" || email=="" || confirm_passwd==""){
+        alert("账号密码不能为空");
+    }
+    else if(passwd!=confirm_passwd){
+        alert("两次输入的密码不一致");
+    }
+    else{
+//        var jsonstr = {};
+//        jsonstr["phone"] = zhanghao;
+//        jsonstr["password"] = mima;
+        var jsonstr = {
+            "email": email,
+            "password": passwd
+        };
+        url = "http://"+document.domain+":80/register";
+        sendinfo(url,jsonstr,callback);
+    }
+}
+
+function sendinfo(url,jsonstr,callback){
+    $.ajax({
+        url : url,
+        type : "post",
+        dataType : "json",
+        contentType: "application/x-www-form-urlencoded",
+        //contentType: "application/json;charset=UTF-8",
+        data : jsonstr,
+        success : callback,
+        error : function (data) {
+            alert("前端发送数据失败");
+        }
+    })
+}
+
+function get_question_product_listing(){
+    var event = window.event || e;
+    var obj=document.elementFromPoint(event.clientX,event.clientY);
+    var field = obj.text;
+    field = field.toLocaleLowerCase()
+//    alert(field)
+    localStorage["current_question_catogry"] =field;
+}
